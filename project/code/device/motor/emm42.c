@@ -139,11 +139,13 @@ static uint8 emm42_receive_response(emm42_device_struct *device, uint8 *data, ui
 // 参数说明     address             设备地址 (1-247)
 // 参数说明     uart_index          UART通道
 // 参数说明     baudrate            波特率
+// 参数说明     tx_pin              UART发送引脚
+// 参数说明     rx_pin              UART接收引脚
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_init(&emm42_device, 1, UART_1, 115200);
+// 使用示例     result = emm42_init(&emm42_device, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uart_index, uint32 baudrate)
+uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uart_index, uint32 baudrate, uart_tx_pin_enum tx_pin, uart_rx_pin_enum rx_pin)
 {
     if(!device || address == 0 || address > 247)
     {
@@ -159,13 +161,13 @@ uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uar
     device->receive_length = 0;
     
     // 初始化UART
-    uart_init(uart_index, baudrate, UART_1_TX, UART_1_RX);
+    uart_init(uart_index, baudrate, tx_pin, rx_pin);
     
     // 清空接收缓冲区
     uart_clear_index(uart_index);
     
-    EMM42_DEBUG_PRINTF("EMM42设备初始化完成: 地址=%d, UART=%d, 波特率=%d\r\n", 
-                       address, uart_index, baudrate);
+    EMM42_DEBUG_PRINTF("EMM42设备初始化完成: 地址=%d, UART=%d, 波特率=%d, TX=%d, RX=%d\r\n", 
+                       address, uart_index, baudrate, tx_pin, rx_pin);
     
     return EMM42_ERROR_NONE;
 }

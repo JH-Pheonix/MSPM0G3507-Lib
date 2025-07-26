@@ -182,7 +182,7 @@ typedef enum
 } emm42_origin_mode_enum;
 
 //====================================================函数声明====================================================
-uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uart_index, uint32 baudrate);
+uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uart_index, uint32 baudrate, uart_tx_pin_enum tx_pin, uart_rx_pin_enum rx_pin);
 
 uint8 emm42_enable_motor(emm42_device_struct *device, uint8 enable);
 uint8 emm42_speed_control(emm42_device_struct *device, int16 speed);

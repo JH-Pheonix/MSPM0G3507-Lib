@@ -21,7 +21,7 @@ void emm42_single_motor_example(void)
     printf("=== 单个电机控制示例 ===\r\n");
     
     // 1. 初始化电机 (地址1, UART1, 115200波特率)
-    result = emm42_init(&motor1, 1, UART_1, 115200);
+    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败! 错误码: %d\r\n", result);
@@ -133,21 +133,21 @@ void emm42_multi_motor_example(void)
     printf("=== 多电机独立控制示例 ===\r\n");
     
     // 1. 初始化三个电机 (使用同一个UART，不同地址)
-    result = emm42_init(&motor1, 1, UART_1, 115200);
+    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机1初始化失败! 错误码: %d\r\n", result);
         return;
     }
     
-    result = emm42_init(&motor2, 2, UART_1, 115200);
+    result = emm42_init(&motor2, 2, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机2初始化失败! 错误码: %d\r\n", result);
         return;
     }
     
-    result = emm42_init(&motor3, 3, UART_1, 115200);
+    result = emm42_init(&motor3, 3, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机3初始化失败! 错误码: %d\r\n", result);
@@ -209,7 +209,7 @@ void emm42_read_param_example(void)
     printf("=== 电机参数读取示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200);
+    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -245,7 +245,7 @@ void emm42_emergency_stop_example(void)
     printf("=== 电机紧急停止示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200);
+    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -302,7 +302,7 @@ void emm42_position_control_example(void)
     printf("=== 位置控制详细示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200);
+    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -376,7 +376,7 @@ void emm42_speed_control_example(void)
     printf("=== 速度控制详细示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200);
+    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
