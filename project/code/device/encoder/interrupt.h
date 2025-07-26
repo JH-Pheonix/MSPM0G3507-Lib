@@ -14,7 +14,7 @@ typedef struct {
 uint8 encoder_interrupt_init(uint8 encoder_index);
 void encoder_interrupt_handler(uint8 encoder_index);
 void encoder_interrupt_update(void);
-int32 encoder_interrupt_read(uint8 encoder_index);
+encoder_data_t encoder_interrupt_read(uint8 encoder_index);
 void encoder_interrupt_clear(uint8 encoder_index);
 
 #endif

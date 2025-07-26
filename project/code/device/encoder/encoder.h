@@ -31,4 +31,8 @@ typedef enum {
     ENCODER_INCR,
 } encoder_mode_t;
 
+void encoder_init(encoder_mode_t mode);
+encoder_data_t encoder_read(uint8 encoder_index);
+void encoder_clear(uint8 encoder_index);
+
 #endif
