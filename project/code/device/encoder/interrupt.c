@@ -1,9 +1,16 @@
 #include "interrupt.h"
 #include "encoder.h"
+#include "pin.h"
 
 // 批处理标志
 static volatile uint32 encoder_flags = 0;
-static encoder_interrupt_state_t int_encoders[MAX_ENCODER_COUNT];
+static encoder_interrupt_state_t int_encoders[MAX_ENCODER_COUNT] = {
+    {ENCODER_1_PIN, 0, 0, 0},
+    {ENCODER_2_PIN, 0, 0, 0},
+    {ENCODER_3_PIN, 0, 0, 0},
+    {ENCODER_4_PIN, 0, 0, 0}
+};
+
 static const int8 state_table[16] = {
     0, -1, 1, 0,    // 00->xx
     1, 0, 0, -1,    // 01->xx  
@@ -17,7 +24,6 @@ uint8 encoder_interrupt_init(uint8 encoder_index) {
     if(encoder_index >= MAX_ENCODER_COUNT) return 1;
 
     encoder_interrupt_state_t* enc = &int_encoders[encoder_index];
-    encoder_get_pin(encoder_index, &enc->pin_a, &enc->pin_b);
 
     // 配置GPIO（启用滤波功能）
     gpio_init(enc->pin_a, GPI, GPIO_LOW, GPI_PULL_UP);

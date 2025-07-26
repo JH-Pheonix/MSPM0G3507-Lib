@@ -50,17 +50,18 @@
 #define _zf_device_absolute_encoder_h_
 
 #include "zf_common_typedef.h"
+#include "pin.h"
 
 //====================================================硬件 SPI 驱动====================================================
 #define ABSOLUTE_ENCODER_SPI_SPEED          ( 8 * 1000 * 1000 )                	// 硬件 SPI 速率
-#define ABSOLUTE_ENCODER_SPI                ( SPI_1 )                           // 硬件 SPI 号
-#define ABSOLUTE_ENCODER_SCLK_PIN           ( SPI1_SCK_B23 )                    // 硬件 SPI SCK 引脚
-#define ABSOLUTE_ENCODER_MOSI_PIN           ( SPI1_MOSI_B22 )                   // 硬件 SPI MOSI 引脚
-#define ABSOLUTE_ENCODER_MISO_PIN           ( SPI1_MISO_B21 )                   // 硬件 SPI MISO 引脚
+#define ABSOLUTE_ENCODER_SPI                ( ENCODER_SPI )                           // 硬件 SPI 号
+#define ABSOLUTE_ENCODER_SCLK_PIN           ( ENCODER_SCLK_PIN )                    // 硬件 SPI SCK 引脚
+#define ABSOLUTE_ENCODER_MOSI_PIN           ( ENCODER_MOSI_PIN )                   // 硬件 SPI MOSI 引脚
+#define ABSOLUTE_ENCODER_MISO_PIN           ( ENCODER_MISO_PIN )                   // 硬件 SPI MISO 引脚
 //====================================================硬件 SPI 驱动====================================================
 
-#define ABSOLUTE_ENCODER_CS_PIN_MAX         ( 4 )
-#define ABSOLUTE_ENCODER_CS_PIN_LIST        { B17, B18, B26, B27 }
+#define ABSOLUTE_ENCODER_CS_PIN_MAX         ( ENCODER_CNT )
+#define ABSOLUTE_ENCODER_CS_PIN_LIST        ENCODER_CS_PIN_LIST
 #define ABSOLUTE_ENCODER_CS(index, state)   ((state) ? (gpio_high(absolute_encoder_cs_list[index])): (gpio_low(absolute_encoder_cs_list[index])))
 
 #define ABSOLUTE_ENCODER_TIMEOUT_COUNT      ( 100 )

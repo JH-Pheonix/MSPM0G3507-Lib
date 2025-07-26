@@ -1,6 +1,15 @@
 #ifndef _DEVICE_PIN_H_
 #define _DEVICE_PIN_H_
 
+// SPI 接口绝对式编码器引脚配置
+#define ENCODER_SPI SPI1
+#define ENCODER_SCLK_PIN SPI1_SCK_B23
+#define ENCODER_MOSI_PIN SPI1_MOSI_B22
+#define ENCODER_MISO_PIN SPI1_MISO_B21
+#define ENCODER_CNT 4
+#define ENCODER_CS_PIN_LIST { B17, B18, B26, B27 }
+
+// 增量式编码器AB相引脚配置
 #define ENCODER_1_PIN A0, A1
 #define ENCODER_2_PIN A2, A3
 #define ENCODER_3_PIN A4, A5
