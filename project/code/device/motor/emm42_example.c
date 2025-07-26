@@ -1,11 +1,6 @@
 //====================================================EMM42电机驱动使用示例====================================================
 #include "emm42.h"
 
-//====================================================全局变量====================================================
-emm42_device_struct motor1;    // 电机1
-emm42_device_struct motor2;    // 电机2
-emm42_device_struct motor3;    // 电机3
-
 //====================================================示例函数====================================================
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     单个电机基础控制示例
@@ -20,8 +15,8 @@ void emm42_single_motor_example(void)
     
     printf("=== 单个电机控制示例 ===\r\n");
     
-    // 1. 初始化电机 (地址1, UART1, 115200波特率)
-    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
+    // 1. 初始化电机 (UART1, 115200波特率)
+    result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败! 错误码: %d\r\n", result);
@@ -30,7 +25,7 @@ void emm42_single_motor_example(void)
     printf("电机初始化成功!\r\n");
     
     // 2. 使能电机
-    result = emm42_enable_motor(&motor1, 1);
+    result = emm42_enable_motor(UART_1, 1);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机使能失败! 错误码: %d\r\n", result);
@@ -40,7 +35,7 @@ void emm42_single_motor_example(void)
     
     // 3. 速度控制 - 顺时针300RPM
     printf("速度控制: 顺时针300RPM\r\n");
-    result = emm42_speed_control(&motor1, 300);
+    result = emm42_speed_control(UART_1, 300);
     if(result != EMM42_ERROR_NONE)
     {
         printf("速度控制失败! 错误码: %d\r\n", result);
@@ -50,7 +45,7 @@ void emm42_single_motor_example(void)
     
     // 4. 停止电机
     printf("停止电机\r\n");
-    result = emm42_speed_control(&motor1, 0);
+    result = emm42_speed_control(UART_1, 0);
     if(result != EMM42_ERROR_NONE)
     {
         printf("停止电机失败! 错误码: %d\r\n", result);
@@ -60,14 +55,14 @@ void emm42_single_motor_example(void)
     
     // 5. 位置控制 - 相对位置移动90度
     printf("位置控制: 相对移动90度\r\n");
-    result = emm42_rotate_angle(&motor1, 90.0);
+    result = emm42_rotate_angle(UART_1, 90.0);
     if(result != EMM42_ERROR_NONE)
     {
         printf("位置控制失败! 错误码: %d\r\n", result);
     }
     
     // 6. 等待运动完成
-    result = emm42_wait_for_completion(&motor1, 5000);
+    result = emm42_wait_for_completion(UART_1, 5000);
     if(result == EMM42_ERROR_NONE)
     {
         printf("运动完成!\r\n");
@@ -79,14 +74,14 @@ void emm42_single_motor_example(void)
     
     // 7. 逆时针旋转180度
     printf("位置控制: 逆时针旋转180度\r\n");
-    result = emm42_rotate_angle(&motor1, -180.0);
+    result = emm42_rotate_angle(UART_1, -180.0);
     if(result != EMM42_ERROR_NONE)
     {
         printf("位置控制失败! 错误码: %d\r\n", result);
     }
     
     // 等待运动完成
-    result = emm42_wait_for_completion(&motor1, 5000);
+    result = emm42_wait_for_completion(UART_1, 5000);
     if(result == EMM42_ERROR_NONE)
     {
         printf("运动完成!\r\n");
@@ -94,21 +89,21 @@ void emm42_single_motor_example(void)
     
     // 8. 绝对位置控制
     printf("绝对位置控制: 移动到0位置\r\n");
-    result = emm42_position_control(&motor1, 0, 1);  // 绝对位置模式
+    result = emm42_position_control(UART_1, 0, 1);  // 绝对位置模式
     if(result != EMM42_ERROR_NONE)
     {
         printf("绝对位置控制失败! 错误码: %d\r\n", result);
     }
     
     // 等待运动完成
-    result = emm42_wait_for_completion(&motor1, 5000);
+    result = emm42_wait_for_completion(UART_1, 5000);
     if(result == EMM42_ERROR_NONE)
     {
         printf("绝对位置控制完成!\r\n");
     }
     
     // 9. 失能电机
-    result = emm42_enable_motor(&motor1, 0);
+    result = emm42_enable_motor(UART_1, 0);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机失能失败! 错误码: %d\r\n", result);
@@ -124,7 +119,7 @@ void emm42_single_motor_example(void)
 // 参数说明     void
 // 返回参数     void
 // 使用示例     emm42_multi_motor_example();
-// 备注信息     演示多个电机的独立控制
+// 备注信息     演示多个电机的独立控制（需要使用不同的UART）
 //-------------------------------------------------------------------------------------------------------------------
 void emm42_multi_motor_example(void)
 {
@@ -132,66 +127,54 @@ void emm42_multi_motor_example(void)
     
     printf("=== 多电机独立控制示例 ===\r\n");
     
-    // 1. 初始化三个电机 (使用同一个UART，不同地址)
-    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
+    // 1. 初始化三个电机 (使用不同的UART)
+    result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机1初始化失败! 错误码: %d\r\n", result);
         return;
     }
     
-    result = emm42_init(&motor2, 2, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
-    if(result != EMM42_ERROR_NONE)
-    {
-        printf("电机2初始化失败! 错误码: %d\r\n", result);
-        return;
-    }
+    // 注意：如果要控制多个电机，需要使用不同的UART接口
+    // result = emm42_init(UART_2, UART2_TX_B6, UART2_RX_B7);
+    // result = emm42_init(UART_3, UART3_TX_C4, UART3_RX_C5);
     
-    result = emm42_init(&motor3, 3, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
-    if(result != EMM42_ERROR_NONE)
-    {
-        printf("电机3初始化失败! 错误码: %d\r\n", result);
-        return;
-    }
+    printf("电机初始化成功!\r\n");
     
-    printf("所有电机初始化成功!\r\n");
+    // 2. 使能电机
+    emm42_enable_motor(UART_1, 1);
+    printf("电机已使能!\r\n");
     
-    // 2. 使能所有电机
-    emm42_enable_motor(&motor1, 1);
-    emm42_enable_motor(&motor2, 1);
-    emm42_enable_motor(&motor3, 1);
-    printf("所有电机已使能!\r\n");
-    
-    // 3. 让每个电机执行不同的动作
+    // 3. 让电机执行不同的动作
     printf("电机1: 顺时针旋转180度\r\n");
-    emm42_rotate_angle(&motor1, 180.0);
+    emm42_rotate_angle(UART_1, 180.0);
     
-    printf("电机2: 逆时针旋转90度\r\n");
-    emm42_rotate_angle(&motor2, -90.0);
-    
-    printf("电机3: 连续旋转300RPM\r\n");
-    emm42_speed_control(&motor3, 300);
+    // 如果有多个UART的电机：
+    // printf("电机2: 逆时针旋转90度\r\n");
+    // emm42_rotate_angle(UART_2, -90.0);
+    // 
+    // printf("电机3: 连续旋转300RPM\r\n");
+    // emm42_speed_control(UART_3, 300);
     
     // 4. 等待位置控制电机完成
     system_delay_ms(100); // 等待命令发送完成
     
     printf("等待电机1完成...\r\n");
-    emm42_wait_for_completion(&motor1, 5000);
+    emm42_wait_for_completion(UART_1, 5000);
     
-    printf("等待电机2完成...\r\n");
-    emm42_wait_for_completion(&motor2, 5000);
+    // emm42_wait_for_completion(UART_2, 5000);
     
-    // 5. 停止电机3的连续旋转
-    system_delay_ms(3000); // 让电机3旋转3秒
-    printf("停止电机3\r\n");
-    emm42_speed_control(&motor3, 0);
+    // 5. 停止连续旋转的电机
+    // system_delay_ms(3000); // 让电机3旋转3秒
+    // printf("停止电机3\r\n");
+    // emm42_speed_control(UART_3, 0);
     
     // 6. 失能所有电机
-    emm42_enable_motor(&motor1, 0);
-    emm42_enable_motor(&motor2, 0);
-    emm42_enable_motor(&motor3, 0);
+    emm42_enable_motor(UART_1, 0);
+    // emm42_enable_motor(UART_2, 0);
+    // emm42_enable_motor(UART_3, 0);
     
-    printf("所有电机已失能!\r\n");
+    printf("电机已失能!\r\n");
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -209,7 +192,7 @@ void emm42_read_param_example(void)
     printf("=== 电机参数读取示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
+    result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -217,7 +200,7 @@ void emm42_read_param_example(void)
     }
     
     // 读取电机状态
-    result = emm42_read_param(&motor1, 0x30, &status);
+    result = emm42_read_param(UART_1, 0x30, &status);
     if(result == EMM42_ERROR_NONE)
     {
         printf("电机状态: 0x%02X\r\n", status);
@@ -245,7 +228,7 @@ void emm42_emergency_stop_example(void)
     printf("=== 电机紧急停止示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
+    result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -253,7 +236,7 @@ void emm42_emergency_stop_example(void)
     }
     
     // 使能电机
-    result = emm42_enable_motor(&motor1, 1);
+    result = emm42_enable_motor(UART_1, 1);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机使能失败!\r\n");
@@ -262,7 +245,7 @@ void emm42_emergency_stop_example(void)
     
     // 启动高速旋转
     printf("启动高速旋转: 1500RPM\r\n");
-    result = emm42_speed_control(&motor1, 1500);
+    result = emm42_speed_control(UART_1, 1500);
     if(result != EMM42_ERROR_NONE)
     {
         printf("速度控制失败!\r\n");
@@ -272,7 +255,7 @@ void emm42_emergency_stop_example(void)
     // 运行2秒后紧急停止
     system_delay_ms(2000);
     printf("执行紧急停止...\r\n");
-    result = emm42_emergency_stop(&motor1);
+    result = emm42_emergency_stop(UART_1);
     if(result != EMM42_ERROR_NONE)
     {
         printf("紧急停止失败! 错误码: %d\r\n", result);
@@ -284,7 +267,7 @@ void emm42_emergency_stop_example(void)
     
     // 失能电机
     system_delay_ms(1000);
-    emm42_enable_motor(&motor1, 0);
+    emm42_enable_motor(UART_1, 0);
     printf("电机已失能!\r\n");
 }
 
@@ -302,7 +285,7 @@ void emm42_position_control_example(void)
     printf("=== 位置控制详细示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
+    result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -310,7 +293,7 @@ void emm42_position_control_example(void)
     }
     
     // 使能电机
-    result = emm42_enable_motor(&motor1, 1);
+    result = emm42_enable_motor(UART_1, 1);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机使能失败!\r\n");
@@ -319,10 +302,10 @@ void emm42_position_control_example(void)
     
     // 1. 相对位置控制 - 顺时针90度
     printf("相对位置控制: 顺时针90度\r\n");
-    result = emm42_rotate_angle(&motor1, 90.0);
+    result = emm42_rotate_angle(UART_1, 90.0);
     if(result == EMM42_ERROR_NONE)
     {
-        emm42_wait_for_completion(&motor1, 3000);
+        emm42_wait_for_completion(UART_1, 3000);
         printf("第一段运动完成\r\n");
     }
     
@@ -330,10 +313,10 @@ void emm42_position_control_example(void)
     
     // 2. 相对位置控制 - 逆时针180度
     printf("相对位置控制: 逆时针180度\r\n");
-    result = emm42_rotate_angle(&motor1, -180.0);
+    result = emm42_rotate_angle(UART_1, -180.0);
     if(result == EMM42_ERROR_NONE)
     {
-        emm42_wait_for_completion(&motor1, 3000);
+        emm42_wait_for_completion(UART_1, 3000);
         printf("第二段运动完成\r\n");
     }
     
@@ -341,24 +324,24 @@ void emm42_position_control_example(void)
     
     // 3. 绝对位置控制 - 回到0度位置
     printf("绝对位置控制: 回到0度位置\r\n");
-    result = emm42_position_control(&motor1, 0, 1);  // 绝对位置模式
+    result = emm42_position_control(UART_1, 0, 1);  // 绝对位置模式
     if(result == EMM42_ERROR_NONE)
     {
-        emm42_wait_for_completion(&motor1, 3000);
+        emm42_wait_for_completion(UART_1, 3000);
         printf("回零完成\r\n");
     }
     
     // 4. 使用脉冲数进行精确控制
     printf("脉冲控制: 移动800脉冲\r\n");
-    result = emm42_position_control(&motor1, 800, 0);  // 相对位置模式，800脉冲
+    result = emm42_position_control(UART_1, 800, 0);  // 相对位置模式，800脉冲
     if(result == EMM42_ERROR_NONE)
     {
-        emm42_wait_for_completion(&motor1, 3000);
+        emm42_wait_for_completion(UART_1, 3000);
         printf("脉冲控制完成\r\n");
     }
     
     // 失能电机
-    emm42_enable_motor(&motor1, 0);
+    emm42_enable_motor(UART_1, 0);
     printf("位置控制示例完成!\r\n");
 }
 
@@ -376,7 +359,7 @@ void emm42_speed_control_example(void)
     printf("=== 速度控制详细示例 ===\r\n");
     
     // 初始化电机
-    result = emm42_init(&motor1, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
+    result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机初始化失败!\r\n");
@@ -384,7 +367,7 @@ void emm42_speed_control_example(void)
     }
     
     // 使能电机
-    result = emm42_enable_motor(&motor1, 1);
+    result = emm42_enable_motor(UART_1, 1);
     if(result != EMM42_ERROR_NONE)
     {
         printf("电机使能失败!\r\n");
@@ -393,31 +376,31 @@ void emm42_speed_control_example(void)
     
     // 1. 低速旋转
     printf("低速旋转: 200RPM\r\n");
-    emm42_speed_control(&motor1, EMM42_SPEED_SLOW);
+    emm42_speed_control(UART_1, 200);
     system_delay_ms(3000);
     
     // 2. 中速旋转
     printf("中速旋转: 500RPM\r\n");
-    emm42_speed_control(&motor1, EMM42_SPEED_MEDIUM);
+    emm42_speed_control(UART_1, 500);
     system_delay_ms(3000);
     
     // 3. 高速旋转
     printf("高速旋转: 1000RPM\r\n");
-    emm42_speed_control(&motor1, EMM42_SPEED_FAST);
+    emm42_speed_control(UART_1, 1000);
     system_delay_ms(3000);
     
     // 4. 逆时针旋转
     printf("逆时针旋转: -800RPM\r\n");
-    emm42_speed_control(&motor1, -800);
+    emm42_speed_control(UART_1, -800);
     system_delay_ms(3000);
     
     // 5. 停止
     printf("停止电机\r\n");
-    emm42_speed_control(&motor1, 0);
+    emm42_speed_control(UART_1, 0);
     system_delay_ms(1000);
     
     // 失能电机
-    emm42_enable_motor(&motor1, 0);
+    emm42_enable_motor(UART_1, 0);
     printf("速度控制示例完成!\r\n");
 }
 

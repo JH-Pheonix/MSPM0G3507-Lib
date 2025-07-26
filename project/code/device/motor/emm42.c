@@ -2,11 +2,46 @@
  * @file       : emm42.c
  * @brief      : EMM42步进闭环驱动器驱动库
  * @author     : ZeroHzzzz
- * @version    : 1.0
+ * @version    : 2.0
  * @date       : 2024-12-19
  */
 
 #include "emm42.h"
+
+//====================================================全局变量====================================================
+// 全局接收缓冲区
+uint8 emm42_receive_buffer[EMM42_RECEIVE_BUFFER_SIZE];
+uint16 emm42_receive_length = 0;
+
+// 全局配置变量
+static uint8 g_default_address = EMM42_DEFAULT_ADDRESS;
+static uint8 g_checksum_mode = EMM42_CHECKSUM_0X6B;
+static uint32 g_baudrate = EMM42_DEFAULT_BAUDRATE;
+static uint32 g_timeout_ms = EMM42_TIMEOUT_MS;
+
+//====================================================全局配置函数实现====================================================
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     设置全局配置
+// 参数说明     default_address     默认设备地址
+// 参数说明     checksum_mode       校验模式
+// 参数说明     baudrate            波特率
+// 参数说明     timeout_ms          超时时间(ms)
+// 返回参数     void
+// 使用示例     emm42_set_global_config(0x01, EMM42_CHECKSUM_XOR, 115200, 100);
+// 备注信息     
+//-------------------------------------------------------------------------------------------------------------------
+void emm42_set_global_config(uint8 default_address, uint8 checksum_mode, uint32 baudrate, uint32 timeout_ms)
+{
+    g_default_address = default_address;
+    g_checksum_mode = checksum_mode;
+    g_baudrate = baudrate;
+    g_timeout_ms = timeout_ms;
+}
+
+uint8 emm42_get_default_address(void) { return g_default_address; }
+uint8 emm42_get_checksum_mode(void) { return g_checksum_mode; }
+uint32 emm42_get_baudrate(void) { return g_baudrate; }
+uint32 emm42_get_timeout_ms(void) { return g_timeout_ms; }
 
 //====================================================底层通讯函数实现====================================================
 //-------------------------------------------------------------------------------------------------------------------
@@ -45,33 +80,57 @@ static void emm42_build_frame(uint8 *frame, uint8 address, uint8 command, const 
         }
     }
     
-    // 计算校验和
+    // 计算校验和 - 根据全局配置选择校验方式
     uint8 checksum = 0;
-    for(uint8 i = 0; i < 6; i++)
+    switch(g_checksum_mode)
     {
-        checksum += frame[i];
+        case EMM42_CHECKSUM_0X6B:
+            for(uint8 i = 0; i < 6; i++)
+            {
+                checksum += frame[i];
+            }
+            frame[6] = checksum;
+            frame[7] = 0x6B;
+            break;
+            
+        case EMM42_CHECKSUM_XOR:
+            for(uint8 i = 0; i < 6; i++)
+            {
+                checksum ^= frame[i];
+            }
+            frame[6] = checksum;
+            frame[7] = 0x6B;
+            break;
+            
+        default:
+            // 默认使用固定0x6B校验
+            for(uint8 i = 0; i < 6; i++)
+            {
+                checksum += frame[i];
+            }
+            frame[6] = checksum;
+            frame[7] = 0x6B;
+            break;
     }
-    frame[6] = checksum;
-    frame[7] = 0x6B; // 帧尾
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     发送命令
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     *data               数据指针
 // 参数说明     length              数据长度
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_send_command(&emm42_device, command, 8);
+// 使用示例     result = emm42_send_command(UART_1, command, 8);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 emm42_send_command(emm42_device_struct *device, const uint8 *data, uint8 length)
+static uint8 emm42_send_command(uart_index_enum uart_index, const uint8 *data, uint8 length)
 {
-    if(!device || !data) return EMM42_ERROR_PARAM;
+    if(!data) return EMM42_ERROR_PARAM;
     
     // 发送数据
     for(uint8 i = 0; i < length; i++)
     {
-        uart_write_byte(device->uart_index, data[i]);
+        uart_write_byte(uart_index, data[i]);
     }
     
     return EMM42_ERROR_NONE;
@@ -90,37 +149,57 @@ static uint8 emm42_verify_checksum(const uint8 *data, uint8 length)
     if(!data || length < 8) return 0;
     
     uint8 checksum = 0;
-    for(uint8 i = 0; i < 6; i++)
+    switch(g_checksum_mode)
     {
-        checksum += data[i];
+        case EMM42_CHECKSUM_0X6B:
+            for(uint8 i = 0; i < 6; i++)
+            {
+                checksum += data[i];
+            }
+            return (checksum == data[6] && data[7] == 0x6B);
+            
+        case EMM42_CHECKSUM_XOR:
+            for(uint8 i = 0; i < 6; i++)
+            {
+                checksum ^= data[i];
+            }
+            return (checksum == data[6] && data[7] == 0x6B);
+            
+        default:
+            // 默认使用固定0x6B校验
+            for(uint8 i = 0; i < 6; i++)
+            {
+                checksum += data[i];
+            }
+            return (checksum == data[6] && data[7] == 0x6B);
     }
-    
-    return (checksum == data[6] && data[7] == 0x6B);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     接收响应数据
-// 参数说明     *device             设备结构体指针
-// 参数说明     *data               数据缓冲区指针
-// 参数说明     max_length          最大长度
+// 参数说明     uart_index          UART通道
 // 返回参数     uint8               实际接收长度
-// 使用示例     length = emm42_receive_response(&emm42_device, buffer, 8);
-// 备注信息     
+// 使用示例     length = emm42_receive_response(UART_1);
+// 备注信息     接收到的数据存储在全局缓冲区emm42_receive_buffer中
 //-------------------------------------------------------------------------------------------------------------------
-static uint8 emm42_receive_response(emm42_device_struct *device, uint8 *data, uint8 max_length)
+static uint8 emm42_receive_response(uart_index_enum uart_index)
 {
-    if(!device || !data) return 0;
-    
-    uint8 length = 0;
+    emm42_receive_length = 0;
     uint32 timeout_count = 0;
-    const uint32 timeout_limit = device->timeout_ms * 1000; // 转换为us
+    const uint32 timeout_limit = g_timeout_ms * 1000; // 转换为us
     
-    while(length < max_length && timeout_count < timeout_limit)
+    while(emm42_receive_length < EMM42_RECEIVE_BUFFER_SIZE && timeout_count < timeout_limit)
     {
-        if(uart_query_8bit(device->uart_index, &data[length]))
+        if(uart_query_8bit(uart_index, &emm42_receive_buffer[emm42_receive_length]))
         {
-            length++;
+            emm42_receive_length++;
             timeout_count = 0; // 重置超时计数
+            
+            // 如果接收到完整的8字节响应，退出
+            if(emm42_receive_length >= 8)
+            {
+                break;
+            }
         }
         else
         {
@@ -129,109 +208,80 @@ static uint8 emm42_receive_response(emm42_device_struct *device, uint8 *data, ui
         }
     }
     
-    return length;
+    return emm42_receive_length;
 }
 
 //====================================================单设备控制函数实现====================================================
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     初始化EMM42设备
-// 参数说明     *device             设备结构体指针
-// 参数说明     address             设备地址 (1-247)
+// 函数简介     初始化EMM42电机UART通道
 // 参数说明     uart_index          UART通道
-// 参数说明     baudrate            波特率
 // 参数说明     tx_pin              UART发送引脚
 // 参数说明     rx_pin              UART接收引脚
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_init(&emm42_device, 1, UART_1, 115200, UART1_TX_A8, UART1_RX_A9);
-// 备注信息     
+// 使用示例     result = emm42_init(UART_1, UART1_TX_A8, UART1_RX_A9);
+// 备注信息     使用全局配置的波特率进行初始化
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uart_index, uint32 baudrate, uart_tx_pin_enum tx_pin, uart_rx_pin_enum rx_pin)
+uint8 emm42_init(uart_index_enum uart_index, uart_tx_pin_enum tx_pin, uart_rx_pin_enum rx_pin)
 {
-    if(!device || address == 0 || address > 247)
-    {
-        return EMM42_ERROR_PARAM;
-    }
-    
-    // 初始化设备参数
-    device->address = address;
-    device->uart_index = uart_index;
-    device->baudrate = baudrate;
-    device->checksum_mode = EMM42_CHECKSUM_0X6B;
-    device->timeout_ms = EMM42_TIMEOUT_MS;
-    device->receive_length = 0;
-    
     // 初始化UART
-    uart_init(uart_index, baudrate, tx_pin, rx_pin);
+    uart_init(uart_index, g_baudrate, tx_pin, rx_pin);
     
     // 清空接收缓冲区
     uart_clear_index(uart_index);
-    
-    EMM42_DEBUG_PRINTF("EMM42设备初始化完成: 地址=%d, UART=%d, 波特率=%d, TX=%d, RX=%d\r\n", 
-                       address, uart_index, baudrate, tx_pin, rx_pin);
     
     return EMM42_ERROR_NONE;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     使能/失能电机
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     enable              1-使能 0-失能
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_enable_motor(&emm42_device, 1);
+// 使用示例     result = emm42_enable_motor(UART_1, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_enable_motor(emm42_device_struct *device, uint8 enable)
+uint8 emm42_enable_motor(uart_index_enum uart_index, uint8 enable)
 {
-    if(!device) return EMM42_ERROR_PARAM;
-    
     uint8 command[8];
     uint8 data = enable ? 1 : 0;
     
-    emm42_build_frame(command, device->address, 0xF3, &data, 1);
+    emm42_build_frame(command, g_default_address, 0xF3, &data, 1);
     
-    EMM42_DEBUG_PRINTF("电机%s: 地址=%d\r\n", enable ? "使能" : "失能", device->address);
-    
-    return emm42_send_command(device, command, 8);
+    return emm42_send_command(uart_index, command, 8);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     速度控制
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     speed               速度 (rpm, 带符号)
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_speed_control(&emm42_device, 300);
+// 使用示例     result = emm42_speed_control(UART_1, 300);
 // 备注信息     正值顺时针，负值逆时针
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_speed_control(emm42_device_struct *device, int16 speed)
+uint8 emm42_speed_control(uart_index_enum uart_index, int16 speed)
 {
-    if(!device) return EMM42_ERROR_PARAM;
-    
     uint8 command[8];
     uint8 data[2];
     
     data[0] = (uint8)(speed & 0xFF);        // 低字节
     data[1] = (uint8)((speed >> 8) & 0xFF); // 高字节
     
-    emm42_build_frame(command, device->address, 0xF6, data, 2);
+    emm42_build_frame(command, g_default_address, 0xF6, data, 2);
     
-    EMM42_DEBUG_PRINTF("速度控制: 地址=%d, 速度=%d rpm\r\n", device->address, speed);
-    
-    return emm42_send_command(device, command, 8);
+    return emm42_send_command(uart_index, command, 8);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     位置控制
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     position            目标位置 (脉冲数)
 // 参数说明     absolute            1-绝对位置 0-相对位置
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_position_control(&emm42_device, 1600, 1);
+// 使用示例     result = emm42_position_control(UART_1, 1600, 1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_position_control(emm42_device_struct *device, int32 position, uint8 absolute)
+uint8 emm42_position_control(uart_index_enum uart_index, int32 position, uint8 absolute)
 {
-    if(!device) return EMM42_ERROR_PARAM;
-    
     uint8 command[8];
     uint8 data[4];
     uint8 cmd = absolute ? 0xFD : 0xF4;
@@ -241,149 +291,109 @@ uint8 emm42_position_control(emm42_device_struct *device, int32 position, uint8 
     data[2] = (uint8)((position >> 16) & 0xFF); // 位置次高字节
     data[3] = (uint8)((position >> 24) & 0xFF); // 位置高字节
     
-    emm42_build_frame(command, device->address, cmd, data, 4);
+    emm42_build_frame(command, g_default_address, cmd, data, 4);
     
-    EMM42_DEBUG_PRINTF("位置控制: 地址=%d, %s位置=%d\r\n", 
-                       device->address, absolute ? "绝对" : "相对", position);
-    
-    return emm42_send_command(device, command, 8);
+    return emm42_send_command(uart_index, command, 8);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     旋转指定角度
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     angle               角度 (度, 带符号)
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_rotate_angle(&emm42_device, 90);
+// 使用示例     result = emm42_rotate_angle(UART_1, 90);
 // 备注信息     正值顺时针，负值逆时针
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_rotate_angle(emm42_device_struct *device, float angle)
+uint8 emm42_rotate_angle(uart_index_enum uart_index, float angle)
 {
-    if(!device) return EMM42_ERROR_PARAM;
-    
     // 将角度转换为脉冲数
     int32 pulses = (int32)(angle * EMM42_PULSES_PER_REVOLUTION / 360.0);
     
-    EMM42_DEBUG_PRINTF("角度控制: 地址=%d, 角度=%.1f度, 脉冲数=%d\r\n", 
-                       device->address, angle, pulses);
-    
-    return emm42_position_control(device, pulses, 0); // 相对位置模式
+    return emm42_position_control(uart_index, pulses, 0); // 相对位置模式
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     紧急停止
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_emergency_stop(&emm42_device);
+// 使用示例     result = emm42_emergency_stop(UART_1);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_emergency_stop(emm42_device_struct *device)
+uint8 emm42_emergency_stop(uart_index_enum uart_index)
 {
-    if(!device) return EMM42_ERROR_PARAM;
-    
     uint8 command[8];
     
-    emm42_build_frame(command, device->address, 0xFE, NULL, 0);
+    emm42_build_frame(command, g_default_address, 0xFE, NULL, 0);
     
-    EMM42_DEBUG_PRINTF("紧急停止: 地址=%d\r\n", device->address);
-    
-    return emm42_send_command(device, command, 8);
+    return emm42_send_command(uart_index, command, 8);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     读取设备参数
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     param_type          参数类型
 // 参数说明     *value              参数值指针
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_read_param(&emm42_device, 0x30, &status);
+// 使用示例     result = emm42_read_param(UART_1, 0x30, &status);
 // 备注信息     
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_read_param(emm42_device_struct *device, uint8 param_type, uint8 *value)
+uint8 emm42_read_param(uart_index_enum uart_index, uint8 param_type, uint8 *value)
 {
-    if(!device || !value) return EMM42_ERROR_PARAM;
+    if(!value) return EMM42_ERROR_PARAM;
     
     uint8 command[8];
-    uint8 response[8];
     
-    emm42_build_frame(command, device->address, param_type, NULL, 0);
+    emm42_build_frame(command, g_default_address, param_type, NULL, 0);
     
-    if(emm42_send_command(device, command, 8) != EMM42_ERROR_NONE)
+    if(emm42_send_command(uart_index, command, 8) != EMM42_ERROR_NONE)
     {
-        EMM42_ERROR_PRINTF("发送读取参数命令失败: 地址=%d, 参数=0x%02X\r\n", 
-                          device->address, param_type);
         return EMM42_ERROR_COMMUNICATION;
     }
     
-    if(emm42_receive_response(device, response, 8) != 8)
+    if(emm42_receive_response(uart_index) < 8)
     {
-        EMM42_ERROR_PRINTF("接收参数响应失败: 地址=%d, 参数=0x%02X\r\n", 
-                          device->address, param_type);
         return EMM42_ERROR_COMMUNICATION;
     }
     
-    if(!emm42_verify_checksum(response, 8))
+    if(!emm42_verify_checksum(emm42_receive_buffer, 8))
     {
-        EMM42_ERROR_PRINTF("参数响应校验失败: 地址=%d, 参数=0x%02X\r\n", 
-                          device->address, param_type);
         return EMM42_ERROR_CHECKSUM;
     }
     
-    *value = response[3]; // 数据位
-    
-    EMM42_DEBUG_PRINTF("读取参数成功: 地址=%d, 参数=0x%02X, 值=0x%02X\r\n", 
-                       device->address, param_type, *value);
+    *value = emm42_receive_buffer[3]; // 数据位
     
     return EMM42_ERROR_NONE;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     等待运动完成
-// 参数说明     *device             设备结构体指针
+// 参数说明     uart_index          UART通道
 // 参数说明     timeout_ms          超时时间(毫秒)
 // 返回参数     uint8               0-成功 其他-失败
-// 使用示例     result = emm42_wait_for_completion(&emm42_device, 5000);
+// 使用示例     result = emm42_wait_for_completion(UART_1, 5000);
 // 备注信息     通过读取电机状态寄存器判断运动是否完成
 //-------------------------------------------------------------------------------------------------------------------
-uint8 emm42_wait_for_completion(emm42_device_struct *device, uint32 timeout_ms)
+uint8 emm42_wait_for_completion(uart_index_enum uart_index, uint32 timeout_ms)
 {
-    if(!device) return EMM42_ERROR_PARAM;
-    
     uint32 start_time = system_get_time_ms();
     uint8 status = 0;
     uint8 result;
     
-    EMM42_DEBUG_PRINTF("开始等待运动完成: 地址=%d, 超时=%dms\r\n", 
-                       device->address, timeout_ms);
-    
     while((system_get_time_ms() - start_time) < timeout_ms)
     {
         // 读取电机状态寄存器 (0x30是状态寄存器地址)
-        result = emm42_read_param(device, 0x30, &status);
+        result = emm42_read_param(uart_index, 0x30, &status);
         if(result == EMM42_ERROR_NONE)
         {
             // 检查运动状态位 (bit0表示运动状态: 0-静止, 1-运动中)
             if((status & 0x01) == 0)
             {
-                EMM42_DEBUG_PRINTF("运动完成: 地址=%d, 状态=0x%02X, 用时=%dms\r\n", 
-                                   device->address, status, 
-                                   (uint32)(system_get_time_ms() - start_time));
                 return EMM42_ERROR_NONE;
             }
-            
-            EMM42_DEBUG_PRINTF("运动中: 地址=%d, 状态=0x%02X\r\n", 
-                               device->address, status);
-        }
-        else
-        {
-            EMM42_ERROR_PRINTF("读取运动状态失败: 地址=%d, 错误=%d\r\n", 
-                              device->address, result);
         }
         
         system_delay_ms(10); // 10ms检查间隔
     }
     
-    EMM42_ERROR_PRINTF("等待运动完成超时: 地址=%d, 超时=%dms\r\n", 
-                       device->address, timeout_ms);
     return EMM42_ERROR_TIMEOUT;
 }

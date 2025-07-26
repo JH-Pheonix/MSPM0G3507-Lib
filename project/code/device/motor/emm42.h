@@ -6,6 +6,7 @@
 //====================================================用户配置区域====================================================
 // EMM42通讯参数配置
 #define EMM42_DEFAULT_BAUDRATE          115200          // 默认波特率
+#define EMM42_DEFAULT_ADDRESS           0x01            // 默认设备地址（独立UART时都可以用相同地址）
 #define EMM42_BROADCAST_ADDRESS         0               // 广播地址
 #define EMM42_TIMEOUT_MS                100             // 通讯超时时间(ms)
 #define EMM42_RECEIVE_BUFFER_SIZE       64              // 接收缓冲区大小
@@ -15,10 +16,6 @@
 #define EMM42_MOTOR_STEP_ANGLE          1.8             // 步进角度(度)
 #define EMM42_DEFAULT_SUBDIVISION       16              // 默认细分数
 #define EMM42_PULSES_PER_REVOLUTION     (360.0 / EMM42_MOTOR_STEP_ANGLE * EMM42_DEFAULT_SUBDIVISION) // 每圈脉冲数
-
-// EMM42功能使能配置
-#define EMM42_ENABLE_DEBUG_OUTPUT       1               // 使能调试输出 1-使能 0-关闭
-#define EMM42_ENABLE_AUTO_RETRY         1               // 使能自动重试 1-使能 0-关闭
 
 // 校验方式
 #define EMM42_CHECKSUM_0X6B             0x00            // 固定0x6B校验
@@ -39,18 +36,7 @@
 #define EMM42_ERROR_CONDITION           0x05            // 条件不满足
 #define EMM42_ERROR_COMMUNICATION       0x06            // 通讯错误
 
-//====================================================调试宏定义====================================================
-#if EMM42_ENABLE_DEBUG_OUTPUT
-    #define EMM42_DEBUG_PRINTF(format, ...)    printf("[EMM42 DEBUG] " format, ##__VA_ARGS__)
-    #define EMM42_ERROR_PRINTF(format, ...)    printf("[EMM42 ERROR] " format, ##__VA_ARGS__)
-    #define EMM42_INFO_PRINTF(format, ...)     printf("[EMM42 INFO] " format, ##__VA_ARGS__)
-#else
-    #define EMM42_DEBUG_PRINTF(format, ...)
-    #define EMM42_ERROR_PRINTF(format, ...)
-    #define EMM42_INFO_PRINTF(format, ...)
-#endif
-
-//====================================================常用宏定义====================================================
+//====================================================错误码定义====================================================
 // 角度转脉冲数宏
 #define EMM42_ANGLE_TO_PULSES(angle)    ((uint32)((angle) * EMM42_PULSES_PER_REVOLUTION / 360.0))
 
@@ -73,70 +59,7 @@
 // 限制值在范围内的宏
 #define EMM42_CLAMP(value, min, max)    EMM42_MAX(min, EMM42_MIN(value, max))
 
-//====================================================预定义常量====================================================
-// 常用转速定义 (RPM)
-#define EMM42_SPEED_VERY_SLOW           50
-#define EMM42_SPEED_SLOW                200
-#define EMM42_SPEED_MEDIUM              500
-#define EMM42_SPEED_FAST                1000
-#define EMM42_SPEED_VERY_FAST           2000
-#define EMM42_SPEED_MAX                 3000
-
-// 常用加速度定义
-#define EMM42_ACCELERATION_VERY_SLOW    1
-#define EMM42_ACCELERATION_SLOW         5
-#define EMM42_ACCELERATION_MEDIUM       10
-#define EMM42_ACCELERATION_FAST         50
-#define EMM42_ACCELERATION_VERY_FAST    100
-#define EMM42_ACCELERATION_MAX          255
-
-// 常用角度定义
-#define EMM42_ANGLE_90_DEG              90.0f
-#define EMM42_ANGLE_180_DEG             180.0f
-#define EMM42_ANGLE_270_DEG             270.0f
-#define EMM42_ANGLE_360_DEG             360.0f
-
-//====================================================函数式宏定义====================================================
-// 检查设备指针有效性
-#define EMM42_CHECK_DEVICE(device) \
-    do { \
-        if((device) == NULL) { \
-            EMM42_ERROR_PRINTF("Device pointer is NULL!\r\n"); \
-            return EMM42_ERROR_PARAM; \
-        } \
-    } while(0)
-
-// 检查参数有效性
-#define EMM42_CHECK_PARAM(param) \
-    do { \
-        if((param) == NULL) { \
-            EMM42_ERROR_PRINTF("Parameter is NULL!\r\n"); \
-            return EMM42_ERROR_PARAM; \
-        } \
-    } while(0)
-
-// 检查返回值
-#define EMM42_CHECK_RESULT(result, error_msg) \
-    do { \
-        if((result) != EMM42_ERROR_NONE) { \
-            EMM42_ERROR_PRINTF("%s (Error: %d)\r\n", error_msg, result); \
-            return result; \
-        } \
-    } while(0)
-
 //====================================================结构体定义====================================================
-// EMM42设备结构体
-typedef struct
-{
-    uint8 address;                                      // 设备地址
-    uint8 checksum_mode;                                // 校验模式
-    uart_index_enum uart_index;                         // 使用的UART通道
-    uint32 baudrate;                                    // 波特率
-    uint32 timeout_ms;                                  // 超时时间
-    uint8 receive_buffer[EMM42_RECEIVE_BUFFER_SIZE];    // 接收缓冲区
-    uint16 receive_length;                              // 接收数据长度
-} emm42_device_struct;
-
 // 电机状态结构体
 typedef struct
 {
@@ -181,17 +104,29 @@ typedef enum
     EMM42_ORIGIN_ENDSTOP    = 0x03,                     // 多圈有限位开关回零
 } emm42_origin_mode_enum;
 
+//====================================================全局配置与缓冲区====================================================
+// 全局接收缓冲区 - 由于通讯是串行的，可以共用一个缓冲区
+extern uint8 emm42_receive_buffer[EMM42_RECEIVE_BUFFER_SIZE];
+extern uint16 emm42_receive_length;
+
+// 全局配置函数声明
+void emm42_set_global_config(uint8 default_address, uint8 checksum_mode, uint32 baudrate, uint32 timeout_ms);
+uint8 emm42_get_default_address(void);
+uint8 emm42_get_checksum_mode(void);
+uint32 emm42_get_baudrate(void);
+uint32 emm42_get_timeout_ms(void);
+
 //====================================================函数声明====================================================
-uint8 emm42_init(emm42_device_struct *device, uint8 address, uart_index_enum uart_index, uint32 baudrate, uart_tx_pin_enum tx_pin, uart_rx_pin_enum rx_pin);
+uint8 emm42_init(uart_index_enum uart_index, uart_tx_pin_enum tx_pin, uart_rx_pin_enum rx_pin);
 
-uint8 emm42_enable_motor(emm42_device_struct *device, uint8 enable);
-uint8 emm42_speed_control(emm42_device_struct *device, int16 speed);
-uint8 emm42_position_control(emm42_device_struct *device, int32 position, uint8 absolute);
-uint8 emm42_rotate_angle(emm42_device_struct *device, float angle);
-uint8 emm42_emergency_stop(emm42_device_struct *device);
+uint8 emm42_enable_motor(uart_index_enum uart_index, uint8 enable);
+uint8 emm42_speed_control(uart_index_enum uart_index, int16 speed);
+uint8 emm42_position_control(uart_index_enum uart_index, int32 position, uint8 absolute);
+uint8 emm42_rotate_angle(uart_index_enum uart_index, float angle);
+uint8 emm42_emergency_stop(uart_index_enum uart_index);
 
-uint8 emm42_read_param(emm42_device_struct *device, uint8 param_type, uint8 *value);
+uint8 emm42_read_param(uart_index_enum uart_index, uint8 param_type, uint8 *value);
 
-uint8 emm42_wait_for_completion(emm42_device_struct *device, uint32 timeout_ms);
+uint8 emm42_wait_for_completion(uart_index_enum uart_index, uint32 timeout_ms);
 
 #endif
