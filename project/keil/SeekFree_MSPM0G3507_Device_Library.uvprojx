@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/Integral;../code/device;../code/device/encoder;../code/device/imu;../code/device/motor;../code/system;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
+              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/device;../code/device/encoder;../code/device/imu;../code/device/motor;../code/system;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1027,6 +1027,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>code/algo/Integral</GroupName>
+          <Files>
+            <File>
+              <FileName>Integral.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/Integral/Integral.c</FilePath>
+            </File>
+            <File>
+              <FileName>Integral.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/Integral/Integral.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>code/algo/Madgwick</GroupName>
           <Files>
             <File>
@@ -1053,21 +1068,6 @@
               <FileName>Mahony.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/algo/Mahony/Mahony.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>code/algo/Integral</GroupName>
-          <Files>
-            <File>
-              <FileName>Integral.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../code/algo/Integral/Integral.c</FilePath>
-            </File>
-            <File>
-              <FileName>Integral.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>../code/algo/Integral/Integral.h</FilePath>
             </File>
           </Files>
         </Group>
