@@ -1,7 +1,7 @@
 #include "imu.h"
 
 static imu_device_enum curr_device;
-static bool imu_state = false; // 表示初始化状态
+static bool imu_state = 1; // 表示初始化状态
 
 void imu_init(imu_device_enum device)
 {
@@ -20,13 +20,17 @@ void imu_init(imu_device_enum device)
     case IMU_DEVICE_963RA:
         imu_state = imu963ra_init();
         break;
-
+    
+    case IMU_DEVICE_ADIS16505:
+        imu_state = adis_init();
+        break;
+    
     default:
-        imu_state = false; // 未知设备初始化失败
+        imu_state = 1; 
         break;
     }
 
-    if(imu_state)
+    if(!imu_state) // 0 表示初始化成功, 1 表示初始化失败
     {
         // handler logic
         printf("IMU device initialized successfully.\n");
@@ -40,7 +44,7 @@ void imu_init(imu_device_enum device)
 
 void imu_get_data(imu_data_t *data)
 {
-    if (!imu_state)
+    if (imu_state)
     {
         printf("IMU device not initialized.\n");
         return;
@@ -85,6 +89,10 @@ void imu_get_data(imu_data_t *data)
         data->gyro_x = imu963ra_gyro_x;
         data->gyro_y = imu963ra_gyro_y;
         data->gyro_z = imu963ra_gyro_z;
+        break;
+
+    case IMU_DEVICE_ADIS16505:
+        adis_read_data(data); 
         break;
 
     default:

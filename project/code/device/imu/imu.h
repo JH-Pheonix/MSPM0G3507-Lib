@@ -7,6 +7,7 @@ typedef enum {
     IMU_DEVICE_660RA,
     IMU_DEVICE_660RB,
     IMU_DEVICE_963RA,
+    IMU_DEVICE_ADIS16505,
 } imu_device_enum;
 
 typedef struct {

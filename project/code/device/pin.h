@@ -15,4 +15,13 @@
 #define ENCODER_3_PIN A4, A5
 #define ENCODER_4_PIN A6, A7
 
+// ADIS pin
+#define ADIS_SPI                         (SPI_0           )
+#define ADIS_CS_PIN                      (B20             )
+#define ADIS_RST_PIN                     (B10             )
+#define ADIS_MOSI                        (SPI0_MOSI_B17   )
+#define ADIS_MISO                        (SPI0_MISO_B19   )
+#define ADIS_SCK                         (SPI0_SCK_B18    )
+#define ADIS_SPEED                       (2 * 1000 * 1000 )
+
 #endif
