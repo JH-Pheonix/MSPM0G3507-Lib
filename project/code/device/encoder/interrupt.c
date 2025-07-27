@@ -30,13 +30,13 @@ uint8 encoder_interrupt_init(uint8 encoder_index) {
     gpio_init(enc->pin_b, GPI, GPIO_LOW, GPI_PULL_UP);
 
     // 只在A相配置中断，降低中断频率
-    exti_init(enc->pin_a, EXTI_TRIGGER_BOTH);
+    exti_init(enc->pin_a, EXTI_TRIGGER_BOTH, NULL, NULL);
 
     uint8 state_a = gpio_get_level(enc->pin_a);
     uint8 state_b = gpio_get_level(enc->pin_b);
 
     enc->last_state = (state_a << 1) | state_b;
-    enc->last_time = system_getval_ms();
+    enc->last_time = 0; // 初始化为0，使用系统延时代替时间戳
     
     encoder_state[encoder_index].initialized = 1;
     return 0;
@@ -53,7 +53,6 @@ void encoder_interrupt_handler(uint8 encoder_index) {
 // 批处理更新（在主循环中定期调用）
 void encoder_interrupt_update(void) {
     if(encoder_flags == 0) return;
-    uint32 current_time = system_getval_ms();
     
     for(uint8 i = 0; i < MAX_ENCODER_COUNT; i++) {
         if(!(encoder_flags & (1 << i))) continue;
@@ -74,13 +73,9 @@ void encoder_interrupt_update(void) {
             enc->counter += delta;
             encoder_data[i].position = enc->counter;
             
-            // 计算速度
-            uint32 time_diff = current_time - enc->last_time;
-            if(time_diff > 0) {
-                encoder_data[i].velocity = (encoder_data[i].position - old_position) * 1000 / time_diff;
-            }
+            // 简化速度计算，直接使用位置变化量
+            encoder_data[i].velocity = encoder_data[i].position - old_position;
             
-            enc->last_time = current_time;
         } else if(enc->last_state != current_state) {
             // 错误状态转换
             encoder_state[i].error_count++;

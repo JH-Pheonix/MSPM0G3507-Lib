@@ -190,7 +190,7 @@ static uint8 emm42_receive_response(uart_index_enum uart_index)
     
     while(emm42_receive_length < EMM42_RECEIVE_BUFFER_SIZE && timeout_count < timeout_limit)
     {
-        if(uart_query_8bit(uart_index, &emm42_receive_buffer[emm42_receive_length]))
+        if(uart_query_byte(uart_index, &emm42_receive_buffer[emm42_receive_length]))
         {
             emm42_receive_length++;
             timeout_count = 0; // 重置超时计数
@@ -225,9 +225,6 @@ uint8 emm42_init(uart_index_enum uart_index, uart_tx_pin_enum tx_pin, uart_rx_pi
 {
     // 初始化UART
     uart_init(uart_index, g_baudrate, tx_pin, rx_pin);
-    
-    // 清空接收缓冲区
-    uart_clear_index(uart_index);
     
     return EMM42_ERROR_NONE;
 }
@@ -375,11 +372,11 @@ uint8 emm42_read_param(uart_index_enum uart_index, uint8 param_type, uint8 *valu
 //-------------------------------------------------------------------------------------------------------------------
 uint8 emm42_wait_for_completion(uart_index_enum uart_index, uint32 timeout_ms)
 {
-    uint32 start_time = system_get_time_ms();
+    uint32 timeout_count = 0;
     uint8 status = 0;
     uint8 result;
     
-    while((system_get_time_ms() - start_time) < timeout_ms)
+    while(timeout_count < timeout_ms)
     {
         // 读取电机状态寄存器 (0x30是状态寄存器地址)
         result = emm42_read_param(uart_index, 0x30, &status);
@@ -393,6 +390,7 @@ uint8 emm42_wait_for_completion(uart_index_enum uart_index, uint32 timeout_ms)
         }
         
         system_delay_ms(10); // 10ms检查间隔
+        timeout_count += 10;
     }
     
     return EMM42_ERROR_TIMEOUT;

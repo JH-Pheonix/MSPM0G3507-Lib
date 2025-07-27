@@ -3,8 +3,8 @@
 int16 location_data[MAX_ENCODER_COUNT] = {0, 0, 0, 0};
 int16 offset_data[MAX_ENCODER_COUNT]   = {0, 0, 0, 0};
 
-uint8 encoder_absolute_encoder_init(uint8 encoder_index) {
-    return absolute_encoder_init(encoder_index);
+bool encoder_absolute_encoder_init(uint8 encoder_index) {
+    return absolute_encoder_init(encoder_index) == 0 ? true : false;
 }
 
 void encoder_absolute_encoder_pit_handler(uint32 event, void *ptr) {

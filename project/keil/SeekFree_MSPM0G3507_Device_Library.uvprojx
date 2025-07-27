@@ -10,7 +10,7 @@
       <TargetName>SeekFree_MSPM0G3507_Device_Library</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6180000::V6.18::ARMCLANG</pCCUsed>
+      <pCCUsed>6230000::V6.23::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -184,6 +184,9 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
+            <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>1</hadIROM2>
             <StupSel>8</StupSel>
@@ -337,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user\inc;..\code</IncludePath>
+              <IncludePath>../code/device;../code/device/encoder;../code/device/imu;../code/device/motor;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -350,7 +353,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -395,16 +398,6 @@
               <FileName>isr.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\inc\isr.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>code</GroupName>
-          <Files>
-            <File>
-              <FileName>新建文本文档.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\code\新建文本文档.txt</FilePath>
             </File>
           </Files>
         </Group>
@@ -990,6 +983,76 @@
               <FileName>dl_wwdt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\libraries\sdk\ti\driverlib\dl_wwdt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/encoder</GroupName>
+          <Files>
+            <File>
+              <FileName>absolute_encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/encoder/absolute_encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/encoder/encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/encoder/interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>absolute_encoder.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/encoder/absolute_encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/encoder/encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/encoder/interrupt.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/imu</GroupName>
+          <Files>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/imu/imu.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/imu/imu.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/motor</GroupName>
+          <Files>
+            <File>
+              <FileName>emm42.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/motor/emm42.c</FilePath>
+            </File>
+            <File>
+              <FileName>emm42_example.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/motor/emm42_example.c</FilePath>
+            </File>
+            <File>
+              <FileName>emm42.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/motor/emm42.h</FilePath>
             </File>
           </Files>
         </Group>
