@@ -16,6 +16,6 @@ typedef struct {
 } imu_data_t;
 
 void imu_init(imu_device_enum device);
-void imu_get_data(imu_data_t *data);
+imu_data_t imu_get_data(void);
 
 #endif
