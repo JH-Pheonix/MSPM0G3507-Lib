@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>../code/device;../code/device/encoder;../code/device/imu;../code/device/motor;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
+              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/device;../code/device/encoder;../code/device/imu;../code/device/motor;../code/system;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -987,6 +987,91 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>code/algo/EKF</GroupName>
+          <Files>
+            <File>
+              <FileName>kalman_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/EKF/kalman_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>matrix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/EKF/matrix.c</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/EKF/QuaternionEKF.c</FilePath>
+            </File>
+            <File>
+              <FileName>EKF_Platform.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/EKF/EKF_Platform.h</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/EKF/kalman_filter.h</FilePath>
+            </File>
+            <File>
+              <FileName>matrix.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/EKF/matrix.h</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/EKF/QuaternionEKF.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/Madgwick</GroupName>
+          <Files>
+            <File>
+              <FileName>Madgwick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/Madgwick/Madgwick.c</FilePath>
+            </File>
+            <File>
+              <FileName>Madgwick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/Madgwick/Madgwick.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/Mahony</GroupName>
+          <Files>
+            <File>
+              <FileName>Mahony.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/Mahony/Mahony.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mahony.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/Mahony/Mahony.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/YawIntegral</GroupName>
+          <Files>
+            <File>
+              <FileName>YawIntegral.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/YawIntegral/YawIntegral.c</FilePath>
+            </File>
+            <File>
+              <FileName>YawIntegral.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/YawIntegral/YawIntegral.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>code/device/encoder</GroupName>
           <Files>
             <File>
@@ -1025,9 +1110,19 @@
           <GroupName>code/device/imu</GroupName>
           <Files>
             <File>
+              <FileName>adis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/imu/adis.c</FilePath>
+            </File>
+            <File>
               <FileName>imu.c</FileName>
               <FileType>1</FileType>
               <FilePath>../code/device/imu/imu.c</FilePath>
+            </File>
+            <File>
+              <FileName>adis.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/imu/adis.h</FilePath>
             </File>
             <File>
               <FileName>imu.h</FileName>
@@ -1053,6 +1148,21 @@
               <FileName>emm42.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/device/motor/emm42.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system</GroupName>
+          <Files>
+            <File>
+              <FileName>init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/init.c</FilePath>
+            </File>
+            <File>
+              <FileName>init.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/init.h</FilePath>
             </File>
           </Files>
         </Group>

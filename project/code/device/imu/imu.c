@@ -1,4 +1,5 @@
 #include "imu.h"
+#include "adis.h"
 
 static imu_device_enum curr_device;
 static bool imu_state = 1; // 表示初始化状态

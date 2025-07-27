@@ -25,5 +25,9 @@
 #define Kg                       0.025
 #define ACC_Kg                   0.00245
 
+// 函数声明
+uint8 adis_init(void);
+void adis_read_data(imu_data_t *data);
+void adis_reset(void);
 
 #endif

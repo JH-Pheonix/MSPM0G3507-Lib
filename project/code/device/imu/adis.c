@@ -1,6 +1,9 @@
 #include "adis.h"
 #include "pin.h"
 
+// 需要定义SPI相关函数，如果没有实现，暂时注释掉
+#define SPI_Transfer(x) // TODO: 实现SPI传输函数
+
 static uint16 spi_get_data(uint16);
 
 uint8 adis_init(void)
