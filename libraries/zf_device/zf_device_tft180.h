@@ -52,6 +52,7 @@
 #define _zf_device_tft180_h_
 
 #include "zf_common_typedef.h"
+#include "pin.h"    
 
 #define TFT180_USE_SOFT_SPI             ( 0 )                           //只能使用硬件SPI        // 默认使用硬件 SPI 方式驱动 建议使用硬件 SPI 方式驱动
 #if TFT180_USE_SOFT_SPI                                                         // 这两段 颜色正常的才是正确的 颜色灰的就是没有用的
@@ -63,16 +64,16 @@
 #else
 //====================================================硬件 SPI 驱动====================================================
 #define TFT180_SPI_SPEED                ( 30 * 1000 * 1000 )                    // 硬件 SPI 速率
-#define TFT180_SPI                      ( SPI_0            )                    // 硬件 SPI 号
-#define TFT180_SCL_PIN                  ( SPI0_SCK_A12      )                    // 硬件 SPI SCK 引脚
-#define TFT180_SDA_PIN                  ( SPI0_MOSI_A9     )                    // 硬件 SPI MOSI 引脚
+#define TFT180_SPI                      ( LCD_SPI            )                    // 硬件 SPI 号
+#define TFT180_SCL_PIN                  ( LCD_SCL_PIN      )                    // 硬件 SPI SCK 引脚
+#define TFT180_SDA_PIN                  ( LCD_SDA_PIN     )                    // 硬件 SPI MOSI 引脚
 //====================================================硬件 SPI 驱动====================================================
 #endif
 
-#define TFT180_RES_PIN                  ( A7 )                                 // 液晶复位引脚定义
-#define TFT180_DC_PIN                   ( A15  )                                 // 液晶命令位引脚定义
-#define TFT180_CS_PIN                   ( A8  )                                 // CS 片选引脚
-#define TFT180_BL_PIN                   ( A13 )                                 // 液晶背光引脚定义
+#define TFT180_RES_PIN                  ( LCD_RES_PIN )                                 // 液晶复位引脚定义
+#define TFT180_DC_PIN                   ( LCD_DC_PIN )                                 // 液晶命令位引脚定义
+#define TFT180_CS_PIN                   ( LCD_CS_PIN )                                 // CS 片选引脚
+#define TFT180_BL_PIN                   ( LCD_BL_PIN )                                 // 液晶背光引脚定义
 
 #define TFT180_DEFAULT_DISPLAY_DIR      ( TFT180_PORTAIT   )                    // 默认的显示方向
 #define TFT180_DEFAULT_PENCOLOR         ( RGB565_RED       )                    // 默认的画笔颜色
@@ -83,6 +84,9 @@
 #define TFT180_RST(x)                   ((x) ? (gpio_high(TFT180_RES_PIN)) : (gpio_low(TFT180_RES_PIN)))
 #define TFT180_CS(x)                    ((x) ? (gpio_high(TFT180_CS_PIN)) : (gpio_low(TFT180_CS_PIN)))
 #define TFT180_BLK(x)                   ((x) ? (gpio_high(TFT180_BL_PIN)) : (gpio_low(TFT180_BL_PIN)))
+
+#define TFT180_WIDTH_MAX              ( 160 )                                  // TFT180 最大宽度
+#define TFT180_HEIGHT_MAX             ( 128 )                                  // TFT180 最大高度
 
 typedef enum
 {

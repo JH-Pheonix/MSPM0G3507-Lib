@@ -63,8 +63,8 @@ static uint16                   tft180_bgcolor      = TFT180_DEFAULT_BGCOLOR;
 static tft180_dir_enum          tft180_display_dir  = TFT180_DEFAULT_DISPLAY_DIR;
 static tft180_font_size_enum    tft180_display_font = TFT180_DEFAULT_DISPLAY_FONT;
 
-static uint8                    tft180_x_max        = 160;
-static uint8                    tft180_y_max        = 128;
+static uint8                    tft180_x_max        = TFT180_WIDTH_MAX;
+static uint8                    tft180_y_max        = TFT180_HEIGHT_MAX;
 
 #if TFT180_USE_SOFT_SPI
 static soft_spi_info_struct             tft180_spi;

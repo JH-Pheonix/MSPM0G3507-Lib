@@ -24,4 +24,13 @@
 #define ADIS_SCK                         (SPI0_SCK_B18    )
 #define ADIS_SPEED                       (2 * 1000 * 1000 )
 
+// tft180 pin
+#define LCD_SPI                          (SPI_0           )
+#define LCD_SCL_PIN                      (SPI0_SCK_A12    )
+#define LCD_SDA_PIN                      (SPI0_MOSI_A9    )
+#define LCD_RES_PIN                      (A7              ) // 复位引脚
+#define LCD_CS_PIN                       (A8              ) // 片选引脚
+#define LCD_DC_PIN                       (A15             ) // 数据/命令引脚
+#define LCD_BL_PIN                       (A13             ) // 背光引脚
+
 #endif
