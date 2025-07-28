@@ -2156,7 +2156,7 @@
   </Group>
 
   <Group>
-    <GroupName>code/system</GroupName>
+    <GroupName>code/system/init</GroupName>
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
@@ -2168,7 +2168,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>../code/system/init.c</PathWithFileName>
+      <PathWithFileName>../code/system/init/init.c</PathWithFileName>
       <FilenameWithoutPath>init.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -2180,7 +2180,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>../code/system/init.h</PathWithFileName>
+      <PathWithFileName>../code/system/init/init.h</PathWithFileName>
       <FilenameWithoutPath>init.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
