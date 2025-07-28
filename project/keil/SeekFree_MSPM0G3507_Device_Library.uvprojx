@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/ins;../code/device;../code/device/encoder;../code/device/imu;../code/device/lcd;../code/device/motor;../code/system;../code/system/init;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
+              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/ins;../code/device;../code/device/encoder;../code/device/imu;../code/device/key;../code/device/lcd;../code/device/motor;../code/system;../code/system/init;../code/system/menu;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1142,6 +1142,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>code/device/key</GroupName>
+          <Files>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/key/key.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/key/key.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>code/device/lcd</GroupName>
           <Files>
             <File>
@@ -1188,6 +1203,21 @@
               <FileName>init.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/system/init/init.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system/menu</GroupName>
+          <Files>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/menu/menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/menu/menu.h</FilePath>
             </File>
           </Files>
         </Group>

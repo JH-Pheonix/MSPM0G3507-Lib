@@ -33,4 +33,9 @@
 #define LCD_DC_PIN                       (A15             ) // 数据/命令引脚
 #define LCD_BL_PIN                       (A13             ) // 背光引脚
 
+// key pin
+//                C    , A    , D    , B    , CENTER
+#define MKEY_NAME KEY_U, KEY_D, KEY_L, KEY_R, KEY_B
+#define MKEY_LIST A0, A10, A12, A15, A13
+
 #endif
