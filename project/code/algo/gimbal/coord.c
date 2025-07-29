@@ -7,6 +7,7 @@ static gimbal_calibration_data_t cal_data = {
     .right_bottom = {.pan = 22.0f, .tilt = 7.0f}
 }; // 示例值，按需更改
 
+// 双线性插值
 gimbal_angle_2d_t coord_to_angle(float target_x, float target_y)
 {
     gimbal_angle_2d_t result = {0.0f, 0.0f};

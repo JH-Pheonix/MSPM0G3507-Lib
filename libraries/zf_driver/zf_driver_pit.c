@@ -267,7 +267,38 @@ void pit_ms_init(pit_index_enum pit_n, uint32 period, void_callback_uint32_ptr c
     timer_obj->COUNTERREGS.CTRCTL = GPTIMER_CTRCTL_CM_UP | GPTIMER_CTRCTL_REPEAT_REPEAT_1;
     timer_obj->CLKSEL = GPTIMER_CLKSEL_MFCLK_SEL_ENABLE;
     timer_obj->CLKDIV = 7;
-    timer_obj->COMMONREGS.CPS = 249;
+	if(period <= 20)
+	{
+		switch(period)
+		{
+			case 1  :  timer_obj->COMMONREGS.CPS = 180 ; break;
+			case 2  :  timer_obj->COMMONREGS.CPS = 203 ; break;
+			case 3  :  timer_obj->COMMONREGS.CPS = 220 ; break;
+			case 4  :  timer_obj->COMMONREGS.CPS = 225 ; break;
+			case 5  :  timer_obj->COMMONREGS.CPS = 229 ; break;
+			case 6  :  timer_obj->COMMONREGS.CPS = 233 ; break;
+			case 7 :   timer_obj->COMMONREGS.CPS = 236 ; break;
+			case 8 :   timer_obj->COMMONREGS.CPS = 239 ; break;
+			case 9 :   timer_obj->COMMONREGS.CPS = 240 ; break;
+			case 10 :  timer_obj->COMMONREGS.CPS = 241 ; break;
+			case 11  :  timer_obj->COMMONREGS.CPS = 242 ; break;
+			case 12  :  timer_obj->COMMONREGS.CPS = 242 ; break;
+			case 13  :  timer_obj->COMMONREGS.CPS = 244 ; break;
+			case 14  :  timer_obj->COMMONREGS.CPS = 245 ; break;
+			case 15  :  timer_obj->COMMONREGS.CPS = 245 ; break;
+			case 16  :  timer_obj->COMMONREGS.CPS = 245 ; break;
+			case 17 :   timer_obj->COMMONREGS.CPS = 246 ; break;
+			case 18 :   timer_obj->COMMONREGS.CPS = 246 ; break;
+			case 19 :   timer_obj->COMMONREGS.CPS = 246 ; break;
+			case 20 :  timer_obj->COMMONREGS.CPS = 247 ; break;
+			default:    break;
+		}
+	}
+	else 
+	{
+		timer_obj->COMMONREGS.CPS = 250 ;
+	}
+	
     if(PIT_TIM_G12 == pit_n)
     {
         timer_obj->COUNTERREGS.LOAD = period * 2 * 250;
