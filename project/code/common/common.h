@@ -3,6 +3,8 @@
 
 #include "zf_common_headfile.h"
 
+#define LIMIT(x, min, max) (((x) < (min)) ? (min) : (((x) > (max)) ? (max) : (x)))
+
 
 typedef struct 
 {
@@ -20,5 +22,6 @@ typedef struct {
     float pan;
     float tilt;
 } gimbal_angle_2d_t;
+
 
 #endif
