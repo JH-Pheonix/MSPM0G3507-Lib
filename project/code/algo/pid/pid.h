@@ -43,10 +43,10 @@ typedef struct
 
 } pid_type_def;
 
-void PID_init_Position(pid_type_def *pid,
-                       const float PID[3],
-                       float max_out,
-                       float max_iout);
+void pid_init(pid_type_def *pid,
+              const float PID[3],
+              float max_out,
+              float max_iout);
 
 float PID_calc_Position(pid_type_def *pid, float ref, float set);
 
@@ -75,8 +75,8 @@ float Speed_Control_turn(float encoder, const float pid_para[3]);
 
 float PID_calc_Position_LowPassD(pid_type_def *pid, float ref, float set);
 float PID_calc_Position_DynamicI(pid_type_def *pid,
-                                   float ref,
-                                   float set,
-                                   float range,
-                                   float iMax);
+                                 float ref,
+                                 float set,
+                                 float range,
+                                 float iMax);
 #endif

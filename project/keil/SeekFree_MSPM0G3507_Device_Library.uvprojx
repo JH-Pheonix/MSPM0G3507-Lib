@@ -1270,9 +1270,19 @@
               <FilePath>../code/system/control/control.c</FilePath>
             </File>
             <File>
+              <FileName>pid_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/control/pid_control.c</FilePath>
+            </File>
+            <File>
               <FileName>control.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/system/control/control.h</FilePath>
+            </File>
+            <File>
+              <FileName>pid_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/control/pid_control.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,9 +1,9 @@
 #include "pid.h"
 
-void PID_init_Position(pid_type_def *pid,
-                       const float PID[3],
-                       float max_out,
-                       float max_iout)
+void pid_init(pid_type_def *pid,
+              const float PID[3],
+              float max_out,
+              float max_iout)
 {
     if (pid == NULL || PID == NULL)
     {
@@ -267,10 +267,10 @@ float PID_calc_DELTA_Square(pid_type_def *pid, float ref, float set)
 /// @param set
 /// @return
 float PID_calc_Position_DynamicI(pid_type_def *pid,
-                                   float ref,
-                                   float set,
-                                   float range,
-                                   float iMax)
+                                 float ref,
+                                 float set,
+                                 float range,
+                                 float iMax)
 {
     if (pid == NULL)
     {
