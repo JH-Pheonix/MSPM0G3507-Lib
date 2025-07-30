@@ -10,7 +10,7 @@ void motor_init()
     gpio_init(MOTOR_RIGHT_DIR, GPO, 1, GPO_PUSH_PULL);
 }
 
-void set_left_motor_pwm(int32 pwm)
+void motor_set_left_pwm(int32 pwm)
 {
     pwm = LIMIT(pwm, -MOTOR_MAX, MOTOR_MAX);
     if (pwm >= 0)
@@ -25,7 +25,7 @@ void set_left_motor_pwm(int32 pwm)
     }
 }
 
-void set_right_motor_pwm(int32 pwm)
+void motor_set_right_pwm(int32 pwm)
 {
     pwm = LIMIT(pwm, -MOTOR_MAX, MOTOR_MAX);
     if (pwm >= 0)
@@ -40,7 +40,7 @@ void set_right_motor_pwm(int32 pwm)
     }
 }
 
-void stop_motor()
+void motor_stop()
 {
     pwm_set_duty(MOTOR_LEFT, 0);
     pwm_set_duty(MOTOR_RIGHT, 0);

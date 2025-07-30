@@ -9,8 +9,8 @@
 #define MOTOR_MAX 9999
 
 void motor_init();
-void set_left_motor_pwm(int32 pwm);
-void set_right_motor_pwm(int32 pwm);
-void stop_motor();
+void motor_set_left_pwm(int32 pwm);
+void motor_set_right_pwm(int32 pwm);
+void motor_stop();
 
 #endif

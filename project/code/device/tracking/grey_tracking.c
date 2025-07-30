@@ -5,14 +5,14 @@ grey_tracking_msg_t grey_tracking_msg[GREY_NUM] = {0};
 
 void grey_tracking_init(grey_tracking_e pin)
 {
-    if(pin < GREY_NUM)
+    if (pin < GREY_NUM)
     {
         gpio_init(GREY_PTxn[pin], GPI, 0, GPO_PUSH_PULL);
     }
     else
     {
         pin = GREY_NUM;
-        while(pin--)
+        while (pin--)
         {
             gpio_init(GREY_PTxn[pin], GPI, 0, GPO_PUSH_PULL);
         }
@@ -21,7 +21,7 @@ void grey_tracking_init(grey_tracking_e pin)
 
 uint8 grey_tracking_get_status(grey_tracking_e pin)
 {
-    if(pin < GREY_NUM)
+    if (pin < GREY_NUM)
     {
         return gpio_get_level(GREY_PTxn[pin]);
     }

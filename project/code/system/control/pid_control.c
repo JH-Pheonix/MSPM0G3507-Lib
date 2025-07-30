@@ -1,8 +1,5 @@
 #include "pid_control.h"
-#include "pid.h"
 #include "control.h"
-
-float base_pwm = 1000.0f; // 基准PWM值
 
 float pid_turn_control(float turn_err_target, float z_velocity)
 {
