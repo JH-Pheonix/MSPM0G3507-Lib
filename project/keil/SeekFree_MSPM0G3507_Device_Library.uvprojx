@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/gimbal;../code/algo/ins;../code/common;../code/device;../code/device/encoder;../code/device/imu;../code/device/key;../code/device/lcd;../code/device/motor;../code/system;../code/system/init;../code/system/menu;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
+              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/gimbal;../code/algo/ins;../code/algo/path;../code/common;../code/device;../code/device/encoder;../code/device/imu;../code/device/key;../code/device/lcd;../code/device/motor;../code/device/tracking;../code/system;../code/system/init;../code/system/menu;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1097,6 +1097,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>code/algo/path</GroupName>
+          <Files>
+            <File>
+              <FileName>path.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/path/path.c</FilePath>
+            </File>
+            <File>
+              <FileName>path.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/path/path.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>code/common</GroupName>
           <Files>
             <File>
@@ -1210,14 +1225,24 @@
               <FilePath>../code/device/motor/emm42.c</FilePath>
             </File>
             <File>
-              <FileName>emm42_example.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../code/device/motor/emm42_example.c</FilePath>
-            </File>
-            <File>
               <FileName>emm42.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/device/motor/emm42.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/tracking</GroupName>
+          <Files>
+            <File>
+              <FileName>grey_tracking.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/tracking/grey_tracking.c</FilePath>
+            </File>
+            <File>
+              <FileName>grey_tracking.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/tracking/grey_tracking.h</FilePath>
             </File>
           </Files>
         </Group>
