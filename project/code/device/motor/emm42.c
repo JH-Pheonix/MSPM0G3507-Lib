@@ -395,3 +395,356 @@ uint8 emm42_wait_for_completion(uart_index_enum uart_index, uint32 timeout_ms)
     
     return EMM42_ERROR_TIMEOUT;
 }
+
+//====================================================回零相关函数实现====================================================
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     设置单圈回零的零点位置
+// 参数说明     uart_index          UART通道
+// 参数说明     store_flag          是否存储标志 (1-存储 0-不存储)
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_set_origin_zero(UART_1, 1);
+// 备注信息     需要先将电机转到想要的零点位置，然后调用此函数设置
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_set_origin_zero(uart_index_enum uart_index, uint8 store_flag)
+{
+    uint8 command[8];
+    uint8 data = store_flag ? 1 : 0;
+    
+    emm42_build_frame(command, g_default_address, 0x93, NULL, 0);
+    command[2] = 0x88;
+    command[3] = data;
+    
+    if(emm42_send_command(uart_index, command, 8) != EMM42_ERROR_NONE)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(emm42_receive_response(uart_index) < 8)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(!emm42_verify_checksum(emm42_receive_buffer, 8))
+    {
+        return EMM42_ERROR_CHECKSUM;
+    }
+    
+    // 检查命令执行状态
+    if(emm42_receive_buffer[2] != EMM42_CMD_SUCCESS)
+    {
+        return EMM42_ERROR_CONDITION;
+    }
+    
+    return EMM42_ERROR_NONE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     触发回零
+// 参数说明     uart_index          UART通道
+// 参数说明     mode                回零模式
+// 参数说明     sync_flag           多机同步标志 (1-启用 0-不启用)
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_trigger_origin(UART_1, EMM42_ORIGIN_NEAREST, 0);
+// 备注信息     
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_trigger_origin(uart_index_enum uart_index, emm42_origin_mode_enum mode, uint8 sync_flag)
+{
+    uint8 command[8];
+    uint8 data[2];
+    
+    data[0] = (uint8)mode;
+    data[1] = sync_flag ? 1 : 0;
+    
+    emm42_build_frame(command, g_default_address, 0x9A, data, 2);
+    
+    if(emm42_send_command(uart_index, command, 8) != EMM42_ERROR_NONE)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(emm42_receive_response(uart_index) < 8)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(!emm42_verify_checksum(emm42_receive_buffer, 8))
+    {
+        return EMM42_ERROR_CHECKSUM;
+    }
+    
+    // 检查命令执行状态
+    if(emm42_receive_buffer[2] != EMM42_CMD_SUCCESS)
+    {
+        return EMM42_ERROR_CONDITION;
+    }
+    
+    return EMM42_ERROR_NONE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     强制中断并退出回零操作
+// 参数说明     uart_index          UART通道
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_interrupt_origin(UART_1);
+// 备注信息     在回零过程中调用可强制停止回零
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_interrupt_origin(uart_index_enum uart_index)
+{
+    uint8 command[8];
+    
+    emm42_build_frame(command, g_default_address, 0x9C, NULL, 0);
+    command[2] = 0x48;
+    
+    if(emm42_send_command(uart_index, command, 8) != EMM42_ERROR_NONE)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(emm42_receive_response(uart_index) < 8)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(!emm42_verify_checksum(emm42_receive_buffer, 8))
+    {
+        return EMM42_ERROR_CHECKSUM;
+    }
+    
+    // 检查命令执行状态
+    if(emm42_receive_buffer[2] != EMM42_CMD_SUCCESS)
+    {
+        return EMM42_ERROR_CONDITION;
+    }
+    
+    return EMM42_ERROR_NONE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     读取原点回零参数
+// 参数说明     uart_index          UART通道
+// 参数说明     *params             参数结构体指针
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_read_origin_params(UART_1, &origin_params);
+// 备注信息     
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_read_origin_params(uart_index_enum uart_index, emm42_origin_params_struct *params)
+{
+    if(!params) return EMM42_ERROR_PARAM;
+    
+    uint8 command[8];
+    
+    emm42_build_frame(command, g_default_address, 0x22, NULL, 0);
+    
+    if(emm42_send_command(uart_index, command, 8) != EMM42_ERROR_NONE)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(emm42_receive_response(uart_index) < 20) // 至少需要20字节响应
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(!emm42_verify_checksum(emm42_receive_buffer, emm42_receive_length))
+    {
+        return EMM42_ERROR_CHECKSUM;
+    }
+    
+    // 解析返回的参数数据
+    params->mode = (emm42_origin_mode_enum)emm42_receive_buffer[2];
+    params->direction = (emm42_direction_enum)emm42_receive_buffer[3];
+    params->speed_rpm = (emm42_receive_buffer[4] << 8) | emm42_receive_buffer[5];
+    params->timeout_ms = (emm42_receive_buffer[6] << 24) | (emm42_receive_buffer[7] << 16) | 
+                        (emm42_receive_buffer[8] << 8) | emm42_receive_buffer[9];
+    params->collision_speed_rpm = (emm42_receive_buffer[10] << 8) | emm42_receive_buffer[11];
+    params->collision_current_ma = (emm42_receive_buffer[12] << 8) | emm42_receive_buffer[13];
+    params->collision_time_ms = (emm42_receive_buffer[14] << 8) | emm42_receive_buffer[15];
+    params->auto_trigger = emm42_receive_buffer[16];
+    
+    return EMM42_ERROR_NONE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     修改原点回零参数
+// 参数说明     uart_index          UART通道
+// 参数说明     *params             参数结构体指针
+// 参数说明     store_flag          是否存储标志 (1-存储 0-不存储)
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_write_origin_params(UART_1, &origin_params, 1);
+// 备注信息     
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_write_origin_params(uart_index_enum uart_index, const emm42_origin_params_struct *params, uint8 store_flag)
+{
+    if(!params) return EMM42_ERROR_PARAM;
+    
+    uint8 command[24]; // 需要更长的命令缓冲区
+    uint8 data[15];
+    
+    // 构建参数数据
+    data[0] = store_flag ? 1 : 0;
+    data[1] = (uint8)params->mode;
+    data[2] = (uint8)params->direction;
+    data[3] = (params->speed_rpm >> 8) & 0xFF;
+    data[4] = params->speed_rpm & 0xFF;
+    data[5] = (params->timeout_ms >> 24) & 0xFF;
+    data[6] = (params->timeout_ms >> 16) & 0xFF;
+    data[7] = (params->timeout_ms >> 8) & 0xFF;
+    data[8] = params->timeout_ms & 0xFF;
+    data[9] = (params->collision_speed_rpm >> 8) & 0xFF;
+    data[10] = params->collision_speed_rpm & 0xFF;
+    data[11] = (params->collision_current_ma >> 8) & 0xFF;
+    data[12] = params->collision_current_ma & 0xFF;
+    data[13] = (params->collision_time_ms >> 8) & 0xFF;
+    data[14] = params->collision_time_ms & 0xFF;
+    
+    // 构建基础帧头
+    command[0] = g_default_address;
+    command[1] = 0x4C;
+    command[2] = 0xAE;
+    
+    // 复制参数数据
+    for(uint8 i = 0; i < 15; i++)
+    {
+        command[3 + i] = data[i];
+    }
+    
+    // 添加auto_trigger参数
+    command[18] = params->auto_trigger ? 1 : 0;
+    
+    // 计算校验和
+    uint8 checksum = 0;
+    switch(g_checksum_mode)
+    {
+        case EMM42_CHECKSUM_0X6B:
+            for(uint8 i = 0; i < 19; i++)
+            {
+                checksum += command[i];
+            }
+            command[19] = checksum;
+            command[20] = 0x6B;
+            break;
+            
+        case EMM42_CHECKSUM_XOR:
+            for(uint8 i = 0; i < 19; i++)
+            {
+                checksum ^= command[i];
+            }
+            command[19] = checksum;
+            command[20] = 0x6B;
+            break;
+            
+        default:
+            // 默认使用固定0x6B校验
+            for(uint8 i = 0; i < 19; i++)
+            {
+                checksum += command[i];
+            }
+            command[19] = checksum;
+            command[20] = 0x6B;
+            break;
+    }
+    
+    if(emm42_send_command(uart_index, command, 21) != EMM42_ERROR_NONE)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(emm42_receive_response(uart_index) < 8)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(!emm42_verify_checksum(emm42_receive_buffer, 8))
+    {
+        return EMM42_ERROR_CHECKSUM;
+    }
+    
+    // 检查命令执行状态
+    if(emm42_receive_buffer[2] != EMM42_CMD_SUCCESS)
+    {
+        return EMM42_ERROR_CONDITION;
+    }
+    
+    return EMM42_ERROR_NONE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     读取回零状态标志位
+// 参数说明     uart_index          UART通道
+// 参数说明     *status             状态标志指针
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_read_origin_status(UART_1, &status);
+// 备注信息     状态标志按位表示: bit0-编码器就绪 bit1-校准表就绪 bit2-正在回零 bit3-回零失败
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_read_origin_status(uart_index_enum uart_index, uint8 *status)
+{
+    if(!status) return EMM42_ERROR_PARAM;
+    
+    uint8 command[8];
+    
+    emm42_build_frame(command, g_default_address, 0x3B, NULL, 0);
+    
+    if(emm42_send_command(uart_index, command, 8) != EMM42_ERROR_NONE)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(emm42_receive_response(uart_index) < 8)
+    {
+        return EMM42_ERROR_COMMUNICATION;
+    }
+    
+    if(!emm42_verify_checksum(emm42_receive_buffer, 8))
+    {
+        return EMM42_ERROR_CHECKSUM;
+    }
+    
+    *status = emm42_receive_buffer[2];
+    
+    return EMM42_ERROR_NONE;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     等待回零完成
+// 参数说明     uart_index          UART通道
+// 参数说明     timeout_ms          超时时间(毫秒)
+// 返回参数     uint8               0-成功 其他-失败
+// 使用示例     result = emm42_wait_for_origin_completion(UART_1, 30000);
+// 备注信息     通过读取回零状态标志位判断回零是否完成或失败
+//-------------------------------------------------------------------------------------------------------------------
+uint8 emm42_wait_for_origin_completion(uart_index_enum uart_index, uint32 timeout_ms)
+{
+    uint32 timeout_count = 0;
+    uint8 status = 0;
+    uint8 result;
+    
+    while(timeout_count < timeout_ms)
+    {
+        // 读取回零状态标志位
+        result = emm42_read_origin_status(uart_index, &status);
+        if(result == EMM42_ERROR_NONE)
+        {
+            // 检查回零失败标志位 (bit3)
+            if(status & EMM42_ORIGIN_STATUS_FAIL)
+            {
+                return EMM42_ERROR_CONDITION; // 回零失败
+            }
+            
+            // 检查正在回零标志位 (bit2)
+            if(!(status & EMM42_ORIGIN_STATUS_HOMING))
+            {
+                // 没有在回零，检查编码器和校准表是否就绪
+                if((status & EMM42_ORIGIN_STATUS_ENCODER_READY) && 
+                   (status & EMM42_ORIGIN_STATUS_CAL_READY))
+                {
+                    return EMM42_ERROR_NONE; // 回零成功
+                }
+            }
+        }
+        
+        system_delay_ms(100); // 100ms检查间隔
+        timeout_count += 100;
+    }
+    
+    return EMM42_ERROR_TIMEOUT;
+}

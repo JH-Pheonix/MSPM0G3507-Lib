@@ -104,6 +104,28 @@ typedef enum
     EMM42_ORIGIN_ENDSTOP    = 0x03,                     // 多圈有限位开关回零
 } emm42_origin_mode_enum;
 
+// 回零状态标志位定义
+typedef enum
+{
+    EMM42_ORIGIN_STATUS_ENCODER_READY   = 0x01,         // 编码器就绪状态标志位
+    EMM42_ORIGIN_STATUS_CAL_READY       = 0x02,         // 校准表就绪状态标志位
+    EMM42_ORIGIN_STATUS_HOMING          = 0x04,         // 正在回零标志位
+    EMM42_ORIGIN_STATUS_FAIL            = 0x08,         // 回零失败标志位
+} emm42_origin_status_enum;
+
+// 回零参数结构体
+typedef struct
+{
+    emm42_origin_mode_enum mode;                        // 回零模式
+    emm42_direction_enum direction;                     // 回零方向
+    uint16 speed_rpm;                                   // 回零转速(RPM)
+    uint32 timeout_ms;                                  // 回零超时时间(ms)
+    uint16 collision_speed_rpm;                         // 无限位碰撞回零检测转速(RPM)
+    uint16 collision_current_ma;                        // 无限位碰撞回零检测电流(mA)
+    uint16 collision_time_ms;                           // 无限位碰撞回零检测时间(ms)
+    uint8 auto_trigger;                                 // 是否使能上电自动触发回零功能
+} emm42_origin_params_struct;
+
 //====================================================全局配置与缓冲区====================================================
 // 全局接收缓冲区 - 由于通讯是串行的，可以共用一个缓冲区
 extern uint8 emm42_receive_buffer[EMM42_RECEIVE_BUFFER_SIZE];
@@ -128,5 +150,14 @@ uint8 emm42_emergency_stop(uart_index_enum uart_index);
 uint8 emm42_read_param(uart_index_enum uart_index, uint8 param_type, uint8 *value);
 
 uint8 emm42_wait_for_completion(uart_index_enum uart_index, uint32 timeout_ms);
+
+// 回零相关函数
+uint8 emm42_set_origin_zero(uart_index_enum uart_index, uint8 store_flag);
+uint8 emm42_trigger_origin(uart_index_enum uart_index, emm42_origin_mode_enum mode, uint8 sync_flag);
+uint8 emm42_interrupt_origin(uart_index_enum uart_index);
+uint8 emm42_read_origin_params(uart_index_enum uart_index, emm42_origin_params_struct *params);
+uint8 emm42_write_origin_params(uart_index_enum uart_index, const emm42_origin_params_struct *params, uint8 store_flag);
+uint8 emm42_read_origin_status(uart_index_enum uart_index, uint8 *status);
+uint8 emm42_wait_for_origin_completion(uart_index_enum uart_index, uint32 timeout_ms);
 
 #endif
