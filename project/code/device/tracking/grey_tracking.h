@@ -9,16 +9,10 @@ typedef enum
     GREY_NUM
 } grey_tracking_e;
 
-typedef struct
-{
-    grey_tracking_e pin;
-    uint8 status;
-} grey_tracking_msg_t;
-
 void grey_tracking_init(grey_tracking_e pin);
 uint8 grey_tracking_get_status(grey_tracking_e pin);
 void grey_tracking_scan(void);
 
-extern grey_tracking_msg_t grey_tracking_msg[GREY_NUM];
+extern uint8 grey_tracking_msg[GREY_NUM];
 
 #endif

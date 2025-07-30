@@ -43,9 +43,9 @@
 #define GREY_TRACKING_LIST B17, B18, A21, A20, A23
 
 // motor pin
-#define MOTOR_LEFT (A24)
-#define MOTOR_LEFT_DIR (A26)
-#define MOTOR_RIGHT (A25)
-#define MOTOR_RIGHT_DIR (A27)
+#define MOTOR_LEFT PWM_TIM_A0_CH0_A0
+#define MOTOR_LEFT_DIR A26
+#define MOTOR_RIGHT PWM_TIM_A1_CH0_A10
+#define MOTOR_RIGHT_DIR A27
 
 #endif

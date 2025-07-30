@@ -1,5 +1,6 @@
 #include "pid_control.h"
 #include "control.h"
+#include "params.h"
 
 float pid_turn_control(float turn_err_target, float z_velocity)
 {

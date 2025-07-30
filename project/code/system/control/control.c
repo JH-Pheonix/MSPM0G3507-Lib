@@ -2,17 +2,12 @@
 #include "zfmotor.h"
 #include "pin.h"
 #include "grey_tracking.h"
+#include "params.h"
+#include "pid_control.h"
 
 pid_type_def turn_angle_velocity_PID;
 pid_type_def turn_err_PID;
 pid_type_def bottom_velocity_PID;
-
-uint8 turn_angle_velocity_time;
-uint8 turn_err_time;
-uint8 bottom_velocity_time;
-
-float base_pwm = 1000.0f;                   // 基准PWM值
-float weight_list[5] = {-10, -5, 0, 5, 10}; // 权重列表
 
 static void control_params_handler(pid_type_def *pid,
                                    const float para[3],
@@ -31,17 +26,14 @@ static void control_params_handler(pid_type_def *pid,
 
 void control_pid_params_init()
 {
-    float bottom_velocity_pid[3] = {0.0, 0.0, 0.0};
     control_params_handler(&bottom_velocity_PID,
                            bottom_velocity_pid,
                            10, 10, 10, 20, 10.0f);
 
-    float turn_angle_velocity_pid[3] = {0.0, 0.0, 0.0};
     control_params_handler(&turn_angle_velocity_PID,
                            turn_angle_velocity_pid,
                            10, 10, 10, 20, 10.0f);
 
-    float turn_err_pid[3] = {0.0, 0.0, 0.0};
     control_params_handler(&turn_err_PID,
                            turn_err_pid,
                            10, 10, 10, 20, 10.0f);
@@ -96,7 +88,7 @@ void main_control_novel(float z_velocity)
     motor_set_right_pwm(base_pwm + turn_diff); // set right pwm
 }
 
-void main_control_open(float z_velocity)
+void main_control_open()
 {
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
     uint8 left = grey_tracking_get_status(GREY_LEFT);
@@ -112,4 +104,37 @@ void main_control_open(float z_velocity)
 
     motor_set_left_pwm(base_pwm - turn_diff);
     motor_set_right_pwm(base_pwm + turn_diff);
+}
+
+uint8 control_check_turn()
+{
+    uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
+    uint8 left = grey_tracking_get_status(GREY_LEFT);
+    uint8 mid = grey_tracking_get_status(GREY_MID);
+    uint8 right = grey_tracking_get_status(GREY_RIGHT);
+    uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
+
+    if ((left_side && left) || (right_side && right))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void control_callback_func()
+{
+    static uint32 cnt = 0;
+    if (control_check_turn()) // 检测到转弯
+    {
+        if (cnt < turn_delay_cnt)
+        {
+            cnt++;
+            return;
+        }
+        else
+        {
+            cnt = 0;
+        }
+    }
+    main_control_open(); // 执行开放式控制
 }

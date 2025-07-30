@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
 
   <SchemaVersion>2.1</SchemaVersion>
@@ -19,28 +19,28 @@
           <PackID>TexasInstruments.MSPM0G1X0X_G3X0X_DFP.1.3.1</PackID>
           <PackURL>https://software-dl.ti.com/msp430/esd/MSPM0-CMSIS/MSPM0G1X0X_G3X0X/latest/exports/</PackURL>
           <Cpu>IRAM(0x20000000,0x00008000) IRAM2(0x20200000,0x00008000) IROM(0x00000000,0x00020000) IROM2(0x00400000,0x00020000) CPUTYPE("Cortex-M0+") CLOCK(12000000) ELITTLE</Cpu>
-          <FlashUtilSpec/>
-          <StartupFile/>
+          <FlashUtilSpec></FlashUtilSpec>
+          <StartupFile></StartupFile>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC8000 -FN1 -FF0MSPM0G_MainFlash_128KB -FS00 -FL020000 -FP0($$Device:MSPM0G3507$02_Flash_Programming\FlashARM\MSPM0G_MainFlash_128KB.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile/>
-          <MemoryEnv/>
-          <Cmp/>
-          <Asm/>
-          <Linker/>
-          <OHString/>
-          <InfinionOptionDll/>
-          <SLE66CMisc/>
-          <SLE66AMisc/>
-          <SLE66LinkerMisc/>
+          <RegisterFile></RegisterFile>
+          <MemoryEnv></MemoryEnv>
+          <Cmp></Cmp>
+          <Asm></Asm>
+          <Linker></Linker>
+          <OHString></OHString>
+          <InfinionOptionDll></InfinionOptionDll>
+          <SLE66CMisc></SLE66CMisc>
+          <SLE66AMisc></SLE66AMisc>
+          <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>$$Device:MSPM0G3507$03_SVD\MSPM0G350x.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath/>
-          <IncludePath/>
-          <LibPath/>
-          <RegisterFilePath/>
-          <DBRegisterFilePath/>
+          <BinPath></BinPath>
+          <IncludePath></IncludePath>
+          <LibPath></LibPath>
+          <RegisterFilePath></RegisterFilePath>
+          <DBRegisterFilePath></DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -62,8 +62,8 @@
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name/>
-            <UserProg2Name/>
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopU1X>0</nStopU1X>
@@ -73,7 +73,7 @@
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>cmd.exe /C "$P../../../tools/keil/syscfg.bat '$P' SeekFree_MSPM0G3507_Device_Library.syscfg"</UserProg1Name>
-            <UserProg2Name/>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -82,15 +82,15 @@
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name/>
-            <UserProg2Name/>
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
-          <SVCSIdString/>
+          <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
           <UseCPPCompiler>0</UseCPPCompiler>
@@ -104,8 +104,8 @@
           <AssembleAssemblyFile>0</AssembleAssemblyFile>
           <PublicsOnly>0</PublicsOnly>
           <StopOnExitCode>3</StopOnExitCode>
-          <CustomArgument/>
-          <IncludeLibraryModules/>
+          <CustomArgument></CustomArgument>
+          <IncludeLibraryModules></IncludeLibraryModules>
           <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
@@ -139,10 +139,10 @@
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
-          <Flash4/>
-          <pFcarmOut/>
-          <pFcarmGrp/>
-          <pFcArmRoot/>
+          <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
           <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
@@ -175,7 +175,7 @@
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M0+"</AdsCpuType>
-            <RvctDeviceName/>
+            <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
@@ -310,7 +310,7 @@
                 <Size>0x8000</Size>
               </OCR_RVCT10>
             </OnChipMemories>
-            <RvctStartVector/>
+            <RvctStartVector></RvctStartVector>
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
@@ -337,9 +337,9 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls/>
+              <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
-              <Undefine/>
+              <Undefine></Undefine>
               <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/gimbal;../code/algo/ins;../code/algo/path;../code/algo/pid;../code/common;../code/device;../code/device/encoder;../code/device/imu;../code/device/key;../code/device/lcd;../code/device/motor;../code/device/tracking;../code/system;../code/system/control;../code/system/init;../code/system/menu;../code/system/params;../code/system/test;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
@@ -355,10 +355,10 @@
             <useXO>0</useXO>
             <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
-              <MiscControls/>
-              <Define/>
-              <Undefine/>
-              <IncludePath/>
+              <MiscControls></MiscControls>
+              <Define></Define>
+              <Undefine></Undefine>
+              <IncludePath></IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -370,13 +370,13 @@
             <useFile>0</useFile>
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
-            <pXoBase/>
+            <pXoBase></pXoBase>
             <ScatterFile>.\mspm0g3507.sct</ScatterFile>
-            <IncludeLibs/>
-            <IncludeLibsPath/>
-            <Misc/>
-            <LinkerInputFile/>
-            <DisabledWarnings/>
+            <IncludeLibs></IncludeLibs>
+            <IncludeLibsPath></IncludeLibsPath>
+            <Misc></Misc>
+            <LinkerInputFile></LinkerInputFile>
+            <DisabledWarnings></DisabledWarnings>
           </LDads>
         </TargetArmAds>
       </TargetOption>
@@ -986,7 +986,377 @@
             </File>
           </Files>
         </Group>
-        <Group><GroupName>code/algo/attitude</GroupName><Files><File><FileName>attitude.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/attitude.c</FilePath></File><File><FileName>kalman_filter.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/EKF/kalman_filter.c</FilePath></File><File><FileName>matrix.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/EKF/matrix.c</FilePath></File><File><FileName>QuaternionEKF.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/EKF/QuaternionEKF.c</FilePath></File><File><FileName>Integral.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/Integral/Integral.c</FilePath></File><File><FileName>Madgwick.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/Madgwick/Madgwick.c</FilePath></File><File><FileName>Mahony.c</FileName><FileType>1</FileType><FilePath>../code/algo/attitude/Mahony/Mahony.c</FilePath></File><File><FileName>attitude.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/attitude.h</FilePath></File><File><FileName>EKF_Platform.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/EKF/EKF_Platform.h</FilePath></File><File><FileName>kalman_filter.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/EKF/kalman_filter.h</FilePath></File><File><FileName>matrix.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/EKF/matrix.h</FilePath></File><File><FileName>QuaternionEKF.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/EKF/QuaternionEKF.h</FilePath></File><File><FileName>Integral.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/Integral/Integral.h</FilePath></File><File><FileName>Madgwick.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/Madgwick/Madgwick.h</FilePath></File><File><FileName>Mahony.h</FileName><FileType>5</FileType><FilePath>../code/algo/attitude/Mahony/Mahony.h</FilePath></File></Files></Group><Group><GroupName>code/algo/gimbal</GroupName><Files><File><FileName>coord.c</FileName><FileType>1</FileType><FilePath>../code/algo/gimbal/coord.c</FilePath></File><File><FileName>coord.h</FileName><FileType>5</FileType><FilePath>../code/algo/gimbal/coord.h</FilePath></File></Files></Group><Group><GroupName>code/algo/ins</GroupName><Files><File><FileName>ins.c</FileName><FileType>1</FileType><FilePath>../code/algo/ins/ins.c</FilePath></File><File><FileName>ins.h</FileName><FileType>5</FileType><FilePath>../code/algo/ins/ins.h</FilePath></File></Files></Group><Group><GroupName>code/algo/path</GroupName><Files><File><FileName>path.c</FileName><FileType>1</FileType><FilePath>../code/algo/path/path.c</FilePath></File><File><FileName>path.h</FileName><FileType>5</FileType><FilePath>../code/algo/path/path.h</FilePath></File></Files></Group><Group><GroupName>code/algo/pid</GroupName><Files><File><FileName>pid.c</FileName><FileType>1</FileType><FilePath>../code/algo/pid/pid.c</FilePath></File><File><FileName>pid.h</FileName><FileType>5</FileType><FilePath>../code/algo/pid/pid.h</FilePath></File></Files></Group><Group><GroupName>code/common</GroupName><Files><File><FileName>common.c</FileName><FileType>1</FileType><FilePath>../code/common/common.c</FilePath></File><File><FileName>common.h</FileName><FileType>5</FileType><FilePath>../code/common/common.h</FilePath></File></Files></Group><Group><GroupName>code/device/encoder</GroupName><Files><File><FileName>absolute_encoder.c</FileName><FileType>1</FileType><FilePath>../code/device/encoder/absolute_encoder.c</FilePath></File><File><FileName>encoder.c</FileName><FileType>1</FileType><FilePath>../code/device/encoder/encoder.c</FilePath></File><File><FileName>interrupt.c</FileName><FileType>1</FileType><FilePath>../code/device/encoder/interrupt.c</FilePath></File><File><FileName>absolute_encoder.h</FileName><FileType>5</FileType><FilePath>../code/device/encoder/absolute_encoder.h</FilePath></File><File><FileName>encoder.h</FileName><FileType>5</FileType><FilePath>../code/device/encoder/encoder.h</FilePath></File><File><FileName>interrupt.h</FileName><FileType>5</FileType><FilePath>../code/device/encoder/interrupt.h</FilePath></File></Files></Group><Group><GroupName>code/device/imu</GroupName><Files><File><FileName>adis.c</FileName><FileType>1</FileType><FilePath>../code/device/imu/adis.c</FilePath></File><File><FileName>imu.c</FileName><FileType>1</FileType><FilePath>../code/device/imu/imu.c</FilePath></File><File><FileName>adis.h</FileName><FileType>5</FileType><FilePath>../code/device/imu/adis.h</FilePath></File><File><FileName>imu.h</FileName><FileType>5</FileType><FilePath>../code/device/imu/imu.h</FilePath></File></Files></Group><Group><GroupName>code/device/key</GroupName><Files><File><FileName>key.c</FileName><FileType>1</FileType><FilePath>../code/device/key/key.c</FilePath></File><File><FileName>key.h</FileName><FileType>5</FileType><FilePath>../code/device/key/key.h</FilePath></File></Files></Group><Group><GroupName>code/device/lcd</GroupName><Files><File><FileName>lcd.c</FileName><FileType>1</FileType><FilePath>../code/device/lcd/lcd.c</FilePath></File><File><FileName>lcd.h</FileName><FileType>5</FileType><FilePath>../code/device/lcd/lcd.h</FilePath></File></Files></Group><Group><GroupName>code/device/motor</GroupName><Files><File><FileName>emm42.c</FileName><FileType>1</FileType><FilePath>../code/device/motor/emm42.c</FilePath></File><File><FileName>zfmotor.c</FileName><FileType>1</FileType><FilePath>../code/device/motor/zfmotor.c</FilePath></File><File><FileName>emm42.h</FileName><FileType>5</FileType><FilePath>../code/device/motor/emm42.h</FilePath></File><File><FileName>zfmotor.h</FileName><FileType>5</FileType><FilePath>../code/device/motor/zfmotor.h</FilePath></File></Files></Group><Group><GroupName>code/device/tracking</GroupName><Files><File><FileName>grey_tracking.c</FileName><FileType>1</FileType><FilePath>../code/device/tracking/grey_tracking.c</FilePath></File><File><FileName>grey_tracking.h</FileName><FileType>5</FileType><FilePath>../code/device/tracking/grey_tracking.h</FilePath></File></Files></Group><Group><GroupName>code/system/control</GroupName><Files><File><FileName>control.c</FileName><FileType>1</FileType><FilePath>../code/system/control/control.c</FilePath></File><File><FileName>pid_control.c</FileName><FileType>1</FileType><FilePath>../code/system/control/pid_control.c</FilePath></File><File><FileName>control.h</FileName><FileType>5</FileType><FilePath>../code/system/control/control.h</FilePath></File><File><FileName>pid_control.h</FileName><FileType>5</FileType><FilePath>../code/system/control/pid_control.h</FilePath></File></Files></Group><Group><GroupName>code/system/init</GroupName><Files><File><FileName>init.c</FileName><FileType>1</FileType><FilePath>../code/system/init/init.c</FilePath></File><File><FileName>init.h</FileName><FileType>5</FileType><FilePath>../code/system/init/init.h</FilePath></File></Files></Group><Group><GroupName>code/system/menu</GroupName><Files><File><FileName>menu.c</FileName><FileType>1</FileType><FilePath>../code/system/menu/menu.c</FilePath></File><File><FileName>menu.h</FileName><FileType>5</FileType><FilePath>../code/system/menu/menu.h</FilePath></File></Files></Group><Group><GroupName>code/system/params</GroupName><Files><File><FileName>params.c</FileName><FileType>1</FileType><FilePath>../code/system/params/params.c</FilePath></File><File><FileName>params.h</FileName><FileType>5</FileType><FilePath>../code/system/params/params.h</FilePath></File></Files></Group><Group><GroupName>code/system/test</GroupName><Files><File><FileName>test.c</FileName><FileType>1</FileType><FilePath>../code/system/test/test.c</FilePath></File><File><FileName>test.h</FileName><FileType>5</FileType><FilePath>../code/system/test/test.h</FilePath></File></Files></Group></Groups>
+        <Group>
+          <GroupName>code/algo/attitude</GroupName>
+          <Files>
+            <File>
+              <FileName>attitude.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/attitude.c</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/EKF/kalman_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>matrix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/EKF/matrix.c</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/EKF/QuaternionEKF.c</FilePath>
+            </File>
+            <File>
+              <FileName>Integral.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/Integral/Integral.c</FilePath>
+            </File>
+            <File>
+              <FileName>Madgwick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/Madgwick/Madgwick.c</FilePath>
+            </File>
+            <File>
+              <FileName>Mahony.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/attitude/Mahony/Mahony.c</FilePath>
+            </File>
+            <File>
+              <FileName>attitude.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/attitude.h</FilePath>
+            </File>
+            <File>
+              <FileName>EKF_Platform.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/EKF/EKF_Platform.h</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/EKF/kalman_filter.h</FilePath>
+            </File>
+            <File>
+              <FileName>matrix.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/EKF/matrix.h</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/EKF/QuaternionEKF.h</FilePath>
+            </File>
+            <File>
+              <FileName>Integral.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/Integral/Integral.h</FilePath>
+            </File>
+            <File>
+              <FileName>Madgwick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/Madgwick/Madgwick.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mahony.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/attitude/Mahony/Mahony.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/gimbal</GroupName>
+          <Files>
+            <File>
+              <FileName>coord.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/gimbal/coord.c</FilePath>
+            </File>
+            <File>
+              <FileName>coord.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/gimbal/coord.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/ins</GroupName>
+          <Files>
+            <File>
+              <FileName>ins.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/ins/ins.c</FilePath>
+            </File>
+            <File>
+              <FileName>ins.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/ins/ins.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/path</GroupName>
+          <Files>
+            <File>
+              <FileName>path.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/path/path.c</FilePath>
+            </File>
+            <File>
+              <FileName>path.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/path/path.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/algo/pid</GroupName>
+          <Files>
+            <File>
+              <FileName>pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/algo/pid/pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/algo/pid/pid.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/common</GroupName>
+          <Files>
+            <File>
+              <FileName>common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/common/common.c</FilePath>
+            </File>
+            <File>
+              <FileName>common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/common/common.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/encoder</GroupName>
+          <Files>
+            <File>
+              <FileName>absolute_encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/encoder/absolute_encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/encoder/encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/encoder/interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>absolute_encoder.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/encoder/absolute_encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>encoder.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/encoder/encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/encoder/interrupt.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/imu</GroupName>
+          <Files>
+            <File>
+              <FileName>adis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/imu/adis.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/imu/imu.c</FilePath>
+            </File>
+            <File>
+              <FileName>adis.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/imu/adis.h</FilePath>
+            </File>
+            <File>
+              <FileName>imu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/imu/imu.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/key</GroupName>
+          <Files>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/key/key.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/key/key.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/lcd</GroupName>
+          <Files>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/lcd/lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/lcd/lcd.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/motor</GroupName>
+          <Files>
+            <File>
+              <FileName>emm42.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/motor/emm42.c</FilePath>
+            </File>
+            <File>
+              <FileName>zfmotor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/motor/zfmotor.c</FilePath>
+            </File>
+            <File>
+              <FileName>emm42.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/motor/emm42.h</FilePath>
+            </File>
+            <File>
+              <FileName>zfmotor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/motor/zfmotor.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/tracking</GroupName>
+          <Files>
+            <File>
+              <FileName>grey_tracking.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/tracking/grey_tracking.c</FilePath>
+            </File>
+            <File>
+              <FileName>grey_tracking.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/tracking/grey_tracking.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system/control</GroupName>
+          <Files>
+            <File>
+              <FileName>control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/control/control.c</FilePath>
+            </File>
+            <File>
+              <FileName>pid_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/control/pid_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/control/control.h</FilePath>
+            </File>
+            <File>
+              <FileName>pid_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/control/pid_control.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system/init</GroupName>
+          <Files>
+            <File>
+              <FileName>init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/init/init.c</FilePath>
+            </File>
+            <File>
+              <FileName>init.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/init/init.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system/menu</GroupName>
+          <Files>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/menu/menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/menu/menu.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system/params</GroupName>
+          <Files>
+            <File>
+              <FileName>params.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/params/params.c</FilePath>
+            </File>
+            <File>
+              <FileName>params.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/params/params.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/system/test</GroupName>
+          <Files>
+            <File>
+              <FileName>test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/system/test/test.c</FilePath>
+            </File>
+            <File>
+              <FileName>test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/system/test/test.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+      </Groups>
     </Target>
   </Targets>
 
