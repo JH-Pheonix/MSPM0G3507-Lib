@@ -64,16 +64,16 @@
 #else
 //====================================================硬件 SPI 驱动====================================================
 #define TFT180_SPI_SPEED                ( 30 * 1000 * 1000 )                    // 硬件 SPI 速率
-#define TFT180_SPI                      ( LCD_SPI            )                    // 硬件 SPI 号
-#define TFT180_SCL_PIN                  ( LCD_SCL_PIN      )                    // 硬件 SPI SCK 引脚
-#define TFT180_SDA_PIN                  ( LCD_SDA_PIN     )                    // 硬件 SPI MOSI 引脚
+#define TFT180_SPI                      LCD_SPI                               // 硬件 SPI 号
+#define TFT180_SCL_PIN                  LCD_SCL_PIN                    // 硬件 SPI SCK 引脚
+#define TFT180_SDA_PIN                  LCD_SDA_PIN                    // 硬件 SPI MOSI 引脚
 //====================================================硬件 SPI 驱动====================================================
 #endif
 
-#define TFT180_RES_PIN                  ( LCD_RES_PIN )                                 // 液晶复位引脚定义
-#define TFT180_DC_PIN                   ( LCD_DC_PIN )                                 // 液晶命令位引脚定义
-#define TFT180_CS_PIN                   ( LCD_CS_PIN )                                 // CS 片选引脚
-#define TFT180_BL_PIN                   ( LCD_BL_PIN )                                 // 液晶背光引脚定义
+#define TFT180_RES_PIN                  LCD_RES_PIN                                 // 液晶复位引脚定义
+#define TFT180_DC_PIN                   LCD_DC_PIN                                 // 液晶命令位引脚定义
+#define TFT180_CS_PIN                   LCD_CS_PIN                                 // CS 片选引脚
+#define TFT180_BL_PIN                   LCD_BL_PIN                                 // 液晶背光引脚定义
 
 #define TFT180_DEFAULT_DISPLAY_DIR      ( TFT180_PORTAIT   )                    // 默认的显示方向
 #define TFT180_DEFAULT_PENCOLOR         ( RGB565_RED       )                    // 默认的画笔颜色
