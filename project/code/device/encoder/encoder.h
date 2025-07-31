@@ -13,21 +13,23 @@
 #define SOLUTION_INTERRUPT 1
 #define SOLUTION_MIXED 0
 
-#define MAX_ENCODER_COUNT 4
-#define ENCODER_RESOLUTION 1024  // 编码器线数
-  
-typedef struct {
+#define ENCODER_RESOLUTION 1024 // 编码器线数
+
+typedef struct
+{
     float position;
     float velocity;
 } encoder_data_t;
 
-typedef struct {
-    uint32 error_count;     // 错误计数
-    uint8 initialized;      // 初始化标志
+typedef struct
+{
+    uint32 error_count; // 错误计数
+    uint8 initialized;  // 初始化标志
 } encoder_state_t;
 
-typedef enum {
-    ENCODER_ABS, 
+typedef enum
+{
+    ENCODER_ABS,
     ENCODER_INCR,
 } encoder_mode_t;
 

@@ -21,7 +21,7 @@
  * 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
  * 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
  *
- * 文件名称          zf_device_absolute_encoder
+ * 文件名称          zf_device_absolute_encoder1
  * 公司名称          成都逐飞科技有限公司
  * 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
  * 开发环境          MDK 5.37
@@ -37,69 +37,69 @@
  * 接线定义：
  *                   ------------------------------------
  *                   模块管脚            单片机管脚
- *                   SCLK                查看 zf_device_absolute_encoder.h 中 ABSOLUTE_ENCODER_SCLK_PIN 宏定义
- *                   MOSI                查看 zf_device_absolute_encoder.h 中 ABSOLUTE_ENCODER_MOSI_PIN 宏定义
- *                   MISO                查看 zf_device_absolute_encoder.h 中 ABSOLUTE_ENCODER_MISO_PIN 宏定义
- *                   CS                  查看 zf_device_absolute_encoder.h 中 ABSOLUTE_ENCODER_CS_PIN 宏定义
+ *                   SCLK                查看 zf_device_absolute_encoder1.h 中 ABSOLUTE_ENCODER1_SCLK_PIN 宏定义
+ *                   MOSI                查看 zf_device_absolute_encoder1.h 中 ABSOLUTE_ENCODER1_MOSI_PIN 宏定义
+ *                   MISO                查看 zf_device_absolute_encoder1.h 中 ABSOLUTE_ENCODER1_MISO_PIN 宏定义
+ *                   CS                  查看 zf_device_absolute_encoder1.h 中 ABSOLUTE_ENCODER1_CS_PIN 宏定义
  *                   VCC                 3.3V电源
  *                   GND                 电源地
  *                   ------------------------------------
  ********************************************************************************************************************/
 
-#ifndef _zf_device_absolute_encoder_h_
-#define _zf_device_absolute_encoder_h_
+#ifndef _zf_device_absolute_encoder1_h_
+#define _zf_device_absolute_encoder1_h_
 
 #include "zf_common_typedef.h"
 #include "pin.h"
 
 //====================================================硬件 SPI 驱动====================================================
-#define ABSOLUTE_ENCODER_SPI_SPEED (8 * 1000 * 1000) // 硬件 SPI 速率
-#define ABSOLUTE_ENCODER_SPI (ENCODER_SPI)           // 硬件 SPI 号
-#define ABSOLUTE_ENCODER_SCLK_PIN (ENCODER_SCLK_PIN) // 硬件 SPI SCK 引脚
-#define ABSOLUTE_ENCODER_MOSI_PIN (ENCODER_MOSI_PIN) // 硬件 SPI MOSI 引脚
-#define ABSOLUTE_ENCODER_MISO_PIN (ENCODER_MISO_PIN) // 硬件 SPI MISO 引脚
+#define ABSOLUTE_ENCODER1_SPI_SPEED (8 * 1000 * 1000) // 硬件 SPI 速率
+#define ABSOLUTE_ENCODER1_SPI (ENCODER1_SPI)           // 硬件 SPI 号
+#define ABSOLUTE_ENCODER1_SCLK_PIN (ENCODER1_SCLK_PIN) // 硬件 SPI SCK 引脚
+#define ABSOLUTE_ENCODER1_MOSI_PIN (ENCODER1_MOSI_PIN) // 硬件 SPI MOSI 引脚
+#define ABSOLUTE_ENCODER1_MISO_PIN (ENCODER1_MISO_PIN) // 硬件 SPI MISO 引脚
 //====================================================硬件 SPI 驱动====================================================
 
-#define ABSOLUTE_ENCODER_CS_PIN_MAX (ENCODER_CNT)
-#define ABSOLUTE_ENCODER_CS(index, state) ((state) ? (gpio_high(absolute_encoder_cs_list[index])) : (gpio_low(absolute_encoder_cs_list[index])))
+#define ABSOLUTE_ENCODER1_CS_PIN_MAX (ENCODER1_CNT)
+#define ABSOLUTE_ENCODER1_CS(index, state) ((state) ? (gpio_high(absolute_encoder1_cs_list[index])) : (gpio_low(absolute_encoder1_cs_list[index])))
 
-#define ABSOLUTE_ENCODER_TIMEOUT_COUNT (100)
-#define ABSOLUTE_ENCODER_DEFAULT_ZERO (0)
+#define ABSOLUTE_ENCODER1_TIMEOUT_COUNT (100)
+#define ABSOLUTE_ENCODER1_DEFAULT_ZERO (0)
 
 //====================================================角度传感器参数====================================================
-#define ABSOLUTE_ENCODER_SPI_W (0x80)
-#define ABSOLUTE_ENCODER_SPI_R (0x40)
+#define ABSOLUTE_ENCODER1_SPI_W (0x80)
+#define ABSOLUTE_ENCODER1_SPI_R (0x40)
 
-#define ABSOLUTE_ENCODER_ZERO_L_REG (0x00)
-#define ABSOLUTE_ENCODER_ZERO_H_REG (0x01)
-#define ABSOLUTE_ENCODER_DIR_REG (0X09)
+#define ABSOLUTE_ENCODER1_ZERO_L_REG (0x00)
+#define ABSOLUTE_ENCODER1_ZERO_H_REG (0x01)
+#define ABSOLUTE_ENCODER1_DIR_REG (0X09)
 //====================================================角度传感器参数====================================================
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     绝对值编码器获取当前角度值
 // 参数说明     index           编码器索引
 // 返回参数     int16           角度值
-// 使用示例     absolute_encoder_get_location();
+// 使用示例     absolute_encoder1_get_location();
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-int16 absolute_encoder_get_location(uint8 index);
+int16 absolute_encoder1_get_location(uint8 index);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     绝对值编码器获取相较上次位置的偏移值
 // 参数说明     index           编码器索引
 // 返回参数     int16           偏移值
-// 使用示例     absolute_encoder_get_offset();
+// 使用示例     absolute_encoder1_get_offset();
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-int16 absolute_encoder_get_offset(uint8 index);
+int16 absolute_encoder1_get_offset(uint8 index);
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     绝对值编码器初始化
 // 参数说明     index           编码器索引
 // 返回参数     uint8           初始化状态 0-成功 1-失败
-// 使用示例     absolute_encoder_init(index);
+// 使用示例     absolute_encoder1_init(index);
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
-uint8 absolute_encoder_init(uint8 index);
+uint8 absolute_encoder1_init(uint8 index);
 
 #endif

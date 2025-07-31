@@ -51,10 +51,12 @@ int main(void)
                                   // 此处编写用户代码 例如外设初始化代码等
     system_init();                // 系统初始化
 
+    test_encoder();
+    lcd_show_string(0, 0, "Encoder Test");
     while (true)
     {
         // 此处编写需要循环执行的代码
-
+        
         // 此处编写需要循环执行的代码
     }
 }

@@ -779,6 +779,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\libraries\zf_device\zf_device_wireless_uart.h</FilePath>
             </File>
+            <File>
+              <FileName>zf_device_absolute_encoder copy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\libraries\zf_device\zf_device_absolute_encoder copy.c</FilePath>
+            </File>
+            <File>
+              <FileName>zf_device_absolute_encoder copy.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\libraries\zf_device\zf_device_absolute_encoder copy.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

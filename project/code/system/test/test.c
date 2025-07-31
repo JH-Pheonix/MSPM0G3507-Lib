@@ -5,6 +5,7 @@
 #include "lcd.h"
 #include "encoder.h"
 #include "grey_tracking.h"
+#include "zf_device_absolute_encoder copy.h"
 
 void test_key()
 {
@@ -46,17 +47,39 @@ void test_imu()
 
 void test_encoder()
 {
-    encoder_init(ENCODER_ABS);
-    while (1)
+    if (absolute_encoder_init(0)) // 初始化4个编码器
     {
-        encoder_data_t data = encoder_read(0);
-        printf("Position: %.2f, Velocity: %.2f\n", data.position, data.velocity);
+
+        lcd_show_string(0, 1, "failed");
     }
+    else
+    {
+        lcd_show_string(0, 1, "successfully");
+    }
+
+    if (absolute_encoder1_init(0)) // 初始化4个编码器
+    {
+
+        lcd_show_string(0, 2, "failed");
+    }
+    else
+    {
+        lcd_show_string(0, 2, "successfully");
+    }
+    // encoder_init(ENCODER_ABS);
+    // while (1)
+    // {
+    //     system_delay_ms(10);
+    //     encoder_data_t data = encoder_read(0);
+    //     printf("Position: %.2f, Velocity: %.2f\n", data.position, data.velocity);
+    // }
 }
 
-void test_grey() {
+void test_grey()
+{
     grey_tracking_init(GREY_NUM);
-    while(1) {
+    while (1)
+    {
         lcd_show_uint(0, 1, grey_tracking_get_status(GREY_LEFT_SIDE), 1);
         lcd_show_uint(0, 2, grey_tracking_get_status(GREY_LEFT), 1);
         lcd_show_uint(0, 3, grey_tracking_get_status(GREY_MID), 1);
