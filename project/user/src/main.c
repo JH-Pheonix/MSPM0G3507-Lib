@@ -49,12 +49,8 @@ int main(void)
     clock_init(SYSTEM_CLOCK_80M); // 时钟配置及系统初始化<务必保留>
     debug_init();                 // 调试串口信息初始化
                                   // 此处编写用户代码 例如外设初始化代码等
+    system_init();                // 系统初始化
 
-    lcd_init();
-    lcd_clear();                               // 清屏
-    tft180_show_string(0, 16 * 0, "SEEKFREE"); // 显示字符串
-
-    // 此处编写用户代码 例如外设初始化代码等
     while (true)
     {
         // 此处编写需要循环执行的代码
