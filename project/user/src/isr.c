@@ -165,21 +165,24 @@ void GROUP1_IRQHandler (void)
         {
             exti_event  = (gpio_group[0]->POLARITY31_16 >> ((exti_index % 16) * 2)) & 0x03;
         }
+        exti_callback_list[exti_index](exti_event, exti_callback_ptr_list[exti_index]);
     }
     else
     {
         register_temp = gpio_group[1]->CPU_INT.IIDX;
-        exti_index = register_temp - 1;
+        if(register_temp)
+        {
+            exti_index = register_temp - 1;
 
-        if(15 >= exti_index)
-        {
-            exti_event  = (gpio_group[1]->POLARITY15_0 >> ((exti_index % 16) * 2)) & 0x03;
-        }
-        else
-        {
-            exti_event  = (gpio_group[1]->POLARITY31_16 >> ((exti_index % 16) * 2)) & 0x03;
+            if(15 >= exti_index)
+            {
+                exti_event  = (gpio_group[1]->POLARITY15_0 >> ((exti_index % 16) * 2)) & 0x03;
+            }
+            else
+            {
+                exti_event  = (gpio_group[1]->POLARITY31_16 >> ((exti_index % 16) * 2)) & 0x03;
+            }
+            exti_callback_list[exti_index](exti_event, exti_callback_ptr_list[exti_index]);
         }
     }
-
-    exti_callback_list[exti_index](exti_event, exti_callback_ptr_list[exti_index]);
 }
