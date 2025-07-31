@@ -53,7 +53,7 @@ int main(void)
 
     // test_encoder();
     // lcd_show_string(0, 0, "Encoder Test");
-    test_grey();
+    // test_grey();
 
     while (true)
     {

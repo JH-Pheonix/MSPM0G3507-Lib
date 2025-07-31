@@ -3,6 +3,8 @@
 
 #include "zf_common_headfile.h"
 
+extern float bottom_velocity_target;
+
 extern float base_pwm;
 extern float weight_list[5];  // 权重列表
 extern uint32 turn_delay_cnt; // 转弯延时计数

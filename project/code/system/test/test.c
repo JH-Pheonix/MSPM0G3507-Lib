@@ -51,15 +51,15 @@ void test_imu()
 
 void test_encoder()
 {
-    if (absolute_encoder_init(0)) // 初始化4个编码器
-    {
+    // if (absolute_encoder_init(0)) // 初始化4个编码器
+    // {
 
-        lcd_show_string(0, 1, "failed");
-    }
-    else
-    {
-        lcd_show_string(0, 1, "successfully");
-    }
+    //     lcd_show_string(0, 1, "failed");
+    // }
+    // else
+    // {
+    //     lcd_show_string(0, 1, "successfully");
+    // }
 
     // if (absolute_encoder1_init(0)) // 初始化4个编码器
     // {
@@ -71,13 +71,15 @@ void test_encoder()
     //     lcd_show_string(0, 2, "successfully");
     // }
     // encoder_init(ENCODER_ABS);
+    absolute_encoder_init(0);
+    absolute_encoder_init(1);
     pit_ms_init(PIT_TIM_G12, 5, encoder_absolute_encoder_pit_handler, (void *)&pit_flag);
     while (1)
     {
         system_delay_ms(10);
         encoder_data_t data1 = encoder_read(0);
         lcd_show_float(0, 0, data1.position, 3, 3);
-        lcd_show_float(0, 1, data1.velocity, 3, 3);
+        lcd_show_float(0, 1, -data1.velocity, 3, 3);
         encoder_data_t data2 = encoder_read(1);
         lcd_show_float(0, 2, data2.position, 3, 3);
         lcd_show_float(0, 3, data2.velocity, 3, 3);

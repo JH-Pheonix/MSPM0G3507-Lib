@@ -21,6 +21,13 @@ void encoder_absolute_encoder_pit_handler(uint32 event, void *ptr)
     }
 }
 
+int16 encoder_absolute_encoder_get_offset(uint8 index)
+{
+    if (index >= ENCODER_CNT)
+        return 0;
+    return absolute_encoder_get_offset(index);
+}
+
 encoder_data_t encoder_absolute_encoder_read(uint8 encoder_index)
 {
     encoder_data_t data = {0, 0};

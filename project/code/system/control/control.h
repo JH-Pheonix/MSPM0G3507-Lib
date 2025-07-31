@@ -10,6 +10,7 @@ uint8 control_check_turn();
 void main_control_novel(float z_velocity);
 void main_control_open();
 void main_control_pid(float z_velocity, float bottom_velocity_target, float bottom_velocity);
+void control_callback_func(uint32 event, void *ptr);
 
 extern pid_type_def turn_angle_velocity_PID;
 extern pid_type_def turn_err_PID;
