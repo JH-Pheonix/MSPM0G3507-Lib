@@ -8,7 +8,7 @@
 void system_init(void)
 {
     lcd_init();
-    // lcd_show_string(0, 0, "System Init");
+    lcd_show_string(0, 0, "System Init");
     // imu_init(IMU_DEVICE_660RA);
     key_init_rewrite(KEY_NUM);
     // grey_tracking_init(GREY_MID);

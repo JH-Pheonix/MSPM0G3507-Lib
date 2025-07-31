@@ -8,6 +8,9 @@
 #define CHAR_WIDTH 8
 #define CHAR_HEIGTH 16
 
+#define TFT180_WIDTH_MAX 160
+#define TFT180_HEIGHT_MAX 128
+
 void lcd_init(void);
 void lcd_clear(void);
 

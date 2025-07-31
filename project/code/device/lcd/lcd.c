@@ -2,14 +2,14 @@
 
 void lcd_init()
 {
-    tft180_set_dir(TFT180_CROSSWISE);
+    tft180_set_dir(TFT180_PORTAIT);
     tft180_set_color(DEFAULT_PEN_COLOR, DEFAULT_BACKGROUND_COLOR);
     tft180_init();
 }
 
 void lcd_clear()
 {
-    tft180_full(DEFAULT_BACKGROUND_COLOR);
+    tft180_clear();
 }
 
 void lcd_show_string(uint16 x, uint16 y, const char *dat)
