@@ -8,5 +8,6 @@ void test_motor(void);
 void test_imu(void);
 void test_encoder(void);
 void test_grey(void);
+void test_adc_grey(void);
 
 #endif

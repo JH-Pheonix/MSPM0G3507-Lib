@@ -23,7 +23,7 @@ uint8 grey_tracking_get_status(grey_tracking_e pin)
 {
     if (pin < GREY_NUM)
     {
-        return grey_tracking_msg[pin];
+        return gpio_get_level(GREY_PTxn[pin]);
     }
     return 0;
 }

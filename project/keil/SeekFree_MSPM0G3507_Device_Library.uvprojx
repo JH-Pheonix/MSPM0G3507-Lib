@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/gimbal;../code/algo/ins;../code/algo/path;../code/algo/pid;../code/common;../code/device;../code/device/encoder;../code/device/imu;../code/device/key;../code/device/lcd;../code/device/motor;../code/device/tracking;../code/system;../code/system/control;../code/system/init;../code/system/menu;../code/system/params;../code/system/test;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
+              <IncludePath>../code/algo;../code/algo/EKF;../code/algo/Integral;../code/algo/Madgwick;../code/algo/Mahony;../code/algo/YawIntegral;../code/algo/attitude;../code/algo/attitude/EKF;../code/algo/attitude/Integral;../code/algo/attitude/Madgwick;../code/algo/attitude/Mahony;../code/algo/gimbal;../code/algo/ins;../code/algo/path;../code/algo/pid;../code/common;../code/device;../code/device/adc;../code/device/encoder;../code/device/imu;../code/device/key;../code/device/lcd;../code/device/motor;../code/device/tracking;../code/system;../code/system/control;../code/system/init;../code/system/menu;../code/system/params;../code/system/test;..\..\libraries\sdk;..\..\libraries\sdk\third_party\CMSIS\Core\Include;..\..\libraries\sdk\ti_config;..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\code;..\user\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -779,16 +779,6 @@
               <FileType>5</FileType>
               <FilePath>..\..\libraries\zf_device\zf_device_wireless_uart.h</FilePath>
             </File>
-            <File>
-              <FileName>zf_device_absolute_encoder copy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\libraries\zf_device\zf_device_absolute_encoder copy.c</FilePath>
-            </File>
-            <File>
-              <FileName>zf_device_absolute_encoder copy.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\libraries\zf_device\zf_device_absolute_encoder copy.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1148,6 +1138,21 @@
               <FileName>common.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/common/common.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>code/device/adc</GroupName>
+          <Files>
+            <File>
+              <FileName>madc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/adc/madc.c</FilePath>
+            </File>
+            <File>
+              <FileName>madc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/adc/madc.h</FilePath>
             </File>
           </Files>
         </Group>
