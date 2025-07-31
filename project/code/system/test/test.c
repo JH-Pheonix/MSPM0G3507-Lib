@@ -30,8 +30,8 @@ void test_key()
 void test_motor()
 {
     motor_init();
-    motor_set_left_pwm(1000);
-    motor_set_right_pwm(1000);
+    motor_set_left_pwm(4000);
+    motor_set_right_pwm(2000);
 }
 
 void test_imu()
