@@ -3,6 +3,8 @@
 #include "zfmotor.h"
 #include "imu.h"
 #include "lcd.h"
+#include "encoder.h"
+#include "grey_tracking.h"
 
 void test_key()
 {
@@ -39,5 +41,26 @@ void test_imu()
         lcd_show_float(0, 3, data.gyro_x, 3, 3);
         lcd_show_float(0, 4, data.gyro_y, 3, 3);
         lcd_show_float(0, 5, data.gyro_z, 3, 3);
+    }
+}
+
+void test_encoder()
+{
+    encoder_init(ENCODER_ABS);
+    while (1)
+    {
+        encoder_data_t data = encoder_read(0);
+        printf("Position: %.2f, Velocity: %.2f\n", data.position, data.velocity);
+    }
+}
+
+void test_grey() {
+    grey_tracking_init(GREY_NUM);
+    while(1) {
+        lcd_show_uint(0, 1, grey_tracking_get_status(GREY_LEFT_SIDE), 1);
+        lcd_show_uint(0, 2, grey_tracking_get_status(GREY_LEFT), 1);
+        lcd_show_uint(0, 3, grey_tracking_get_status(GREY_MID), 1);
+        lcd_show_uint(0, 4, grey_tracking_get_status(GREY_RIGHT), 1);
+        lcd_show_uint(0, 5, grey_tracking_get_status(GREY_RIGHT_SIDE), 1);
     }
 }

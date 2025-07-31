@@ -4,5 +4,9 @@
 #include "zf_common_headfile.h"
 
 void test_key(void);
+void test_motor(void);
+void test_imu(void);
+void test_encoder(void);
+void test_grey(void);
 
 #endif
