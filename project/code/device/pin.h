@@ -28,15 +28,15 @@
 #define LCD_SPI (SPI_1)
 #define LCD_SCL_PIN (SPI1_SCK_B9)
 #define LCD_SDA_PIN (SPI1_MOSI_B8)
-#define LCD_RES_PIN (B10) // 复位引脚
-#define LCD_CS_PIN (B11)  // 片选引脚
-#define LCD_DC_PIN (B14)  // 数据/命令引脚
-#define LCD_BL_PIN (B26)  // 背光引脚
+#define LCD_RES_PIN (A17) // 复位引脚
+#define LCD_CS_PIN (B1)   // 片选引脚
+#define LCD_DC_PIN (B15)  // 数据/命令引脚
+#define LCD_BL_PIN (B3)   // 背光引脚
 
 // key pin
 //                A    , C    , B    , D    , CENTER
 #define MKEY_NAME KEY_U, KEY_D, KEY_L, KEY_R, KEY_B
-#define MKEY_LIST B0, A30, B1, A31, A29
+#define MKEY_LIST A16, A30, A15, A31, A29
 
 // grey tracking pin
 #define GREY_TRACKING_NAME GREY_LEFT_SIDE, GREY_LEFT, GREY_MID, GREY_RIGHT, GREY_RIGHT_SIDE
