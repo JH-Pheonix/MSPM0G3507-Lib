@@ -234,6 +234,7 @@ uint8 imu660rb_init (void)
     system_delay_ms(10);                                                        // 上电延时
 
 #if IMU660RB_USE_SOFT_IIC
+    gpio_init(IMU660RB_CS_PIN, GPO, GPIO_LOW, GPO_PUSH_PULL);
     soft_iic_init(&imu660rb_iic_struct, IMU660RB_DEV_ADDR, IMU660RB_SOFT_IIC_DELAY, IMU660RB_SCL_PIN, IMU660RB_SDA_PIN);
 #else
     spi_init(IMU660RB_SPI, SPI_MODE0, IMU660RB_SPI_SPEED, IMU660RB_SPC_PIN, IMU660RB_SDI_PIN, IMU660RB_SDO_PIN, SPI_CS_NULL);
