@@ -6,6 +6,7 @@
 #include "pid_control.h"
 #include "encoder.h"
 #include "absolute_encoder.h"
+#include "lcd.h"
 
 pid_type_def turn_angle_velocity_PID;
 pid_type_def turn_err_PID;
@@ -70,7 +71,8 @@ void main_control_pid(float z_velocity, float bottom_velocity_target, float bott
     motor_set_right_pwm(bottom_velocity_out + turn_diff);
 }
 
-void main_control_pid_without_vel()
+// 无角速度环控制
+void main_control_pid_without_angle_vel()
 {
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
     uint8 left = grey_tracking_get_status(GREY_LEFT);
@@ -87,7 +89,7 @@ void main_control_pid_without_vel()
     int16 vel_right = encoder_absolute_encoder_get_offset(0);
     int16 vel_left = encoder_absolute_encoder_get_offset(1);
 
-    float turn_diff = pid_turn_control_without_vel(turn_err_target);
+    float turn_diff = pid_turn_control_without_angle_vel(turn_err_target);
     float bottom_velocity_out = pid_bottom_control(bottom_velocity_target, vel_left + vel_right);
 
     // set pwm
@@ -95,7 +97,8 @@ void main_control_pid_without_vel()
     motor_set_right_pwm(bottom_velocity_out + turn_diff);
 }
 
-void main_control_novel(float z_velocity)
+// 开环速度控制
+void main_control_without_vel()
 {
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
     uint8 left = grey_tracking_get_status(GREY_LEFT);
@@ -109,28 +112,81 @@ void main_control_novel(float z_velocity)
                             weight_list[3] * right +
                             weight_list[4] * right_side;
 
-    float turn_diff = pid_turn_control(turn_err_target, z_velocity);
+    float turn_diff = pid_turn_control_without_angle_vel(turn_err_target);
 
-    motor_set_left_pwm(base_pwm - turn_diff);  // set left pwm
-    motor_set_right_pwm(base_pwm + turn_diff); // set right pwm
+    motor_set_left_pwm(control_without_vel_base_pwm - turn_diff);  // set left pwm
+    motor_set_right_pwm(control_without_vel_base_pwm + turn_diff); // set right pwm
 }
 
-void main_control_open()
+// 正常循迹，开环转向
+void main_control_tracking_open_turn()
 {
+    static int turning = 0;
+    static int turn_cnt = 0;
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
     uint8 left = grey_tracking_get_status(GREY_LEFT);
     uint8 mid = grey_tracking_get_status(GREY_MID);
     uint8 right = grey_tracking_get_status(GREY_RIGHT);
     uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
 
-    float turn_diff = weight_list[0] * left_side +
-                      weight_list[1] * left +
-                      weight_list[2] * mid +
-                      weight_list[3] * right +
-                      weight_list[4] * right_side;
+    if (!turning && control_check_turn())
+    {
+        turning = 1;
+        turn_cnt = 0;
+    }
 
-    motor_set_left_pwm(base_pwm - turn_diff);
-    motor_set_right_pwm(base_pwm + turn_diff);
+    if (turning)
+    {
+        // 固定差速转弯
+        motor_set_left_pwm(control_tracking_open_base_pwm - control_tracking_open_turn_diff);
+        motor_set_right_pwm(control_tracking_open_base_pwm + control_tracking_open_turn_diff);
+        turn_cnt++;
+        if (turn_cnt >= control_tracking_open_turn_delay_times)
+        {
+            turning = 0;
+        }
+    }
+    else
+    {
+        // 正常循迹
+        float turn_diff = weight_list[0] * left_side +
+                          weight_list[1] * left +
+                          weight_list[2] * mid +
+                          weight_list[3] * right +
+                          weight_list[4] * right_side;
+        motor_set_left_pwm(control_tracking_open_base_pwm - turn_diff);
+        motor_set_right_pwm(control_tracking_open_base_pwm + turn_diff);
+    }
+}
+
+void main_control_encoder_only()
+{
+    static int32 encoder_sum = 0;
+    static int turning = 0;
+    static int turn_cnt = 0;
+
+    int16 vel_right = encoder_absolute_encoder_get_offset(0);
+    int16 vel_left = encoder_absolute_encoder_get_offset(1);
+
+    encoder_sum += vel_right + vel_left;
+
+    if (!turning && encoder_sum >= control_only_encoder_target_distance)
+    {
+        turning = 1;
+        turn_cnt = 0;
+        encoder_sum = 0; // 重置累计
+    }
+
+    if (turning)
+    {
+        motor_set_left_pwm(control_only_encoder_base_pwm - control_only_encoder_diff);
+        motor_set_right_pwm(control_only_encoder_base_pwm + control_only_encoder_diff);
+        turn_cnt++;
+        if (turn_cnt >= control_only_encoder_turn_delay_times)
+        {
+            turning = 0;
+        }
+    }
 }
 
 uint8 control_check_turn()
@@ -152,20 +208,5 @@ void control_callback_func(uint32 event, void *ptr)
 {
     *((uint8 *)ptr) = 1;
 
-    static uint32 cnt = 0;
-    if (control_check_turn()) // 检测到转弯
-    {
-        // lcd_show_uint(0, 0, 1, 3);
-        if (cnt < turn_delay_cnt)
-        {
-            cnt++;
-            return;
-        }
-        else
-        {
-            cnt = 0;
-        }
-    }
-    // lcd_show_uint(0, 0, 0, 3);
-    main_control_pid_without_vel(); // 执行开放式控制
+    main_control_pid_without_angle_vel(); // 执行开放式控制
 }

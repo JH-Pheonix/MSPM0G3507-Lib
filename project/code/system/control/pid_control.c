@@ -33,7 +33,7 @@ float pid_turn_control(float turn_err_target, float z_velocity)
     return turn_diff;
 }
 
-float pid_turn_control_without_vel(float turn_err_target)
+float pid_turn_control_without_angle_vel(float turn_err_target)
 {
     static uint8 turn_angle_velocity_cnt = 0;
     static uint8 turn_err_cnt = 0;

@@ -7,9 +7,14 @@
 void control_init();
 void control_pid_params_init();
 uint8 control_check_turn();
-void main_control_novel(float z_velocity);
-void main_control_open();
+
 void main_control_pid(float z_velocity, float bottom_velocity_target, float bottom_velocity);
+
+void main_control_pid_without_angle_vel();
+void main_control_tracking_open_turn();
+void main_control_without_vel();
+void main_control_encoder_only();
+
 void control_callback_func(uint32 event, void *ptr);
 
 extern pid_type_def turn_angle_velocity_PID;

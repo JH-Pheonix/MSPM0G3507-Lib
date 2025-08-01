@@ -5,6 +5,6 @@
 
 float pid_turn_control(float turn_err_target, float z_velocity);
 float pid_bottom_control(float bottom_velocity_target, float bottom_velocity);
-float pid_turn_control_without_vel(float turn_err_target);
+float pid_turn_control_without_angle_vel(float turn_err_target);
 
 #endif
