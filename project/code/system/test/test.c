@@ -146,39 +146,47 @@ void test_key()
 
 void test_motor()
 {
+
     lcd_clear();
     system_delay_ms(200);
 
-    while (keymsg.key != KEY_B)
+    static uint16 cnt = 0;
+    uint8 mode = 0;
+    while (1)
     {
-        if (keymsg.key == KEY_U) // 左电机向前
+        cnt++;
+        if (cnt >= 1000)
         {
+            cnt = 0;
+            mode++;
+            if (mode > 3)
+                mode = 0;
+        }
+
+        switch (mode)
+        {
+        case 0: // 左电机向前
             motor_set_right_pwm(2000);
-        }
-        else if (keymsg.key == KEY_D) // 左电机向后
-        {
-            motor_set_right_pwm(-2000);
-        }
-        else if (keymsg.key == KEY_R) // 右电机向前
-        {
-            motor_set_left_pwm(2000);
-        }
-        else if (keymsg.key == KEY_L) // 右电机向后
-        {
-            motor_set_left_pwm(-2000);
-        }
-        else // 没有按键按下时停止电机
-        {
             motor_set_left_pwm(0);
+            break;
+        case 1: // 左电机向后
+            motor_set_right_pwm(-2000);
+            motor_set_left_pwm(0);
+            break;
+        case 2: // 右电机向前
+            motor_set_left_pwm(2000);
             motor_set_right_pwm(0);
+            break;
+        case 3: // 右电机向后
+            motor_set_left_pwm(-2000);
+            motor_set_right_pwm(0);
+            break;
         }
 
         encoder_data_t data1 = encoder_read(0);
-        lcd_show_float(0, 0, data1.position, 3, 3);
-        lcd_show_float(0, 1, -data1.velocity, 3, 3);
         encoder_data_t data2 = encoder_read(1);
-        lcd_show_float(0, 2, data2.position, 3, 3);
-        lcd_show_float(0, 3, data2.velocity, 3, 3);
+        printf("Encoder 1: Position: %.2f, Velocity: %.2f, Encoder 2: Position: %.2f, Velocity: %.2f\n",
+               data1.position, data1.velocity, data2.position, data2.velocity);
 
         system_delay_ms(10);
     }
@@ -193,15 +201,19 @@ void test_grey()
     lcd_clear();
     while (keymsg.key != KEY_L)
     {
-        lcd_clear();
+        // lcd_show_uint(0, 1, grey_tracking_get_status(GREY_LEFT_SIDE), 1);
+        // lcd_show_uint(0, 2, grey_tracking_get_status(GREY_LEFT), 1);
+        // lcd_show_uint(0, 3, grey_tracking_get_status(GREY_MID), 1);
+        // lcd_show_uint(0, 4, grey_tracking_get_status(GREY_RIGHT), 1);
+        // lcd_show_uint(0, 5, grey_tracking_get_status(GREY_RIGHT_SIDE), 1);
 
-        lcd_show_uint(0, 1, grey_tracking_get_status(GREY_LEFT_SIDE), 1);
-        lcd_show_uint(0, 2, grey_tracking_get_status(GREY_LEFT), 1);
-        lcd_show_uint(0, 3, grey_tracking_get_status(GREY_MID), 1);
-        lcd_show_uint(0, 4, grey_tracking_get_status(GREY_RIGHT), 1);
-        lcd_show_uint(0, 5, grey_tracking_get_status(GREY_RIGHT_SIDE), 1);
-
-        system_delay_ms(50);
+        printf("Grey Left Side: %d, Grey Left: %d, Grey Mid: %d, Grey Right: %d, Grey Right Side: %d\n",
+               grey_tracking_get_status(GREY_LEFT_SIDE),
+               grey_tracking_get_status(GREY_LEFT),
+               grey_tracking_get_status(GREY_MID),
+               grey_tracking_get_status(GREY_RIGHT),
+               grey_tracking_get_status(GREY_RIGHT_SIDE));
+        system_delay_ms(20);
     }
 }
 

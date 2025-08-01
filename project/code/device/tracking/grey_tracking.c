@@ -7,14 +7,14 @@ void grey_tracking_init(grey_tracking_e pin)
 {
     if (pin < GREY_NUM)
     {
-        gpio_init(GREY_PTxn[pin], GPI, 0, GPO_PUSH_PULL);
+        gpio_init(GREY_PTxn[pin], GPI, 0, GPI_PULL_UP); // 初始化指定引脚为输入模式
     }
     else
     {
         pin = GREY_NUM;
         while (pin--)
         {
-            gpio_init(GREY_PTxn[pin], GPI, 0, GPO_PUSH_PULL);
+            gpio_init(GREY_PTxn[pin], GPI, 0, GPI_PULL_UP);
         }
     }
 }

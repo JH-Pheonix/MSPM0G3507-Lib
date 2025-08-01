@@ -7,7 +7,7 @@
 #define ENCODER_MOSI_PIN SPI1_MOSI_B22
 #define ENCODER_MISO_PIN SPI1_MISO_B21
 #define ENCODER_CNT 2
-#define ENCODER_CS_PIN_LIST B26, B27
+#define ENCODER_CS_PIN_LIST B17, B0
 
 #define ENCODER1_SPI SPI_0
 #define ENCODER1_SCLK_PIN SPI0_SCK_A12
@@ -32,21 +32,21 @@
 #define ADIS_SPEED (2 * 1000 * 1000)
 
 // tft180 pin
-// #define LCD_SPI (SPI_1)
-// #define LCD_SCL_PIN (SPI1_SCK_B9)
-// #define LCD_SDA_PIN (SPI1_MOSI_B8)
-// #define LCD_RES_PIN (B10) // 复位引脚
-// #define LCD_CS_PIN (B14)  // 片选引脚
-// #define LCD_DC_PIN (B11)  // 数据/命令引脚
-// #define LCD_BL_PIN (B26)  // 背光引脚
+#define LCD_SPI (SPI_1)
+#define LCD_SCL_PIN (SPI1_SCK_B9)
+#define LCD_SDA_PIN (SPI1_MOSI_B8)
+#define LCD_RES_PIN (B10) // 复位引脚
+#define LCD_CS_PIN (B14)  // 片选引脚
+#define LCD_DC_PIN (B11)  // 数据/命令引脚
+#define LCD_BL_PIN (B26)  // 背光引脚
 
-#define LCD_SPI (SPI_0)
-#define LCD_SCL_PIN (SPI0_SCK_A12)
-#define LCD_SDA_PIN (SPI0_MOSI_A9)
-#define LCD_RES_PIN (A7) // 复位引脚
-#define LCD_DC_PIN (A15) // 片选引脚
-#define LCD_CS_PIN (A8)  // 数据/命令引脚
-#define LCD_BL_PIN (A13) // 背光引脚
+// #define LCD_SPI (SPI_0)
+// #define LCD_SCL_PIN (SPI0_SCK_A12)
+// #define LCD_SDA_PIN (SPI0_MOSI_A9)
+// #define LCD_RES_PIN (A7) // 复位引脚
+// #define LCD_DC_PIN (A15) // 片选引脚
+// #define LCD_CS_PIN (A8)  // 数据/命令引脚
+// #define LCD_BL_PIN (A13) // 背光引脚
 
 // key pin
 //                A    , C    , B    , D    , CENTER
@@ -55,7 +55,7 @@
 
 // grey tracking pin
 #define GREY_TRACKING_NAME GREY_LEFT_SIDE, GREY_LEFT, GREY_MID, GREY_RIGHT, GREY_RIGHT_SIDE
-#define GREY_TRACKING_LIST A23, B24, A22, A24, A25
+#define GREY_TRACKING_LIST B18, A17, A15, A22, B24
 
 // adc
 #define MADC_NAME MADC_1, MADC_2, MADC_3, MADC_4, MADC_5, MADC_6, MADC_7, MADC_8
@@ -67,9 +67,14 @@
 // #define MOTOR_RIGHT PWM_TIM_A0_CH0_B8
 // #define MOTOR_RIGHT_DIR B9
 
-#define MOTOR_LEFT PWM_TIM_A0_CH0_B8
-#define MOTOR_LEFT_DIR B13
-#define MOTOR_RIGHT PWM_TIM_A0_CH1_B9
-#define MOTOR_RIGHT_DIR B12
+// #define MOTOR_LEFT PWM_TIM_A0_CH0_B8
+// #define MOTOR_LEFT_DIR B13
+// #define MOTOR_RIGHT PWM_TIM_A0_CH1_B9
+// #define MOTOR_RIGHT_DIR B12
+
+#define MOTOR_RIGHT PWM_TIM_A0_CH0_B8
+#define MOTOR_RIGHT_DIR B13
+#define MOTOR_LEFT PWM_TIM_A0_CH1_B9
+#define MOTOR_LEFT_DIR B12
 
 #endif
