@@ -12,6 +12,9 @@ pid_type_def turn_angle_velocity_PID;
 pid_type_def turn_err_PID;
 pid_type_def bottom_velocity_PID;
 
+pid_type_def bottom_velocity_left_PID;
+pid_type_def bottom_velocity_right_PID;
+
 static void control_params_handler(pid_type_def *pid,
                                    const float para[3],
                                    float kp_coefficient,
@@ -31,15 +34,30 @@ void control_pid_params_init()
 {
     control_params_handler(&bottom_velocity_PID,
                            bottom_velocity_pid,
-                           10, 10, 10, 20, 10.0f);
+                           1, 1, 1, 9999, 9999);
+
+    // control_params_handler(&bottom_velocity_left_PID,
+    //                        bottom_velocity_left_pid,
+    //                        1, 1, 1, 9999, 5000.0f);
+
+    // control_params_handler(&bottom_velocity_right_PID,
+    //                        bottom_velocity_right_pid,
+    //                        1, 1, 1, 9999, 5000.0f);
+
+    pid_init_double_k(&bottom_velocity_left_PID,
+                      bottom_velocity_left_pid,
+                      9999, 5000.0f);
+    pid_init_double_k(&bottom_velocity_right_PID,
+                      bottom_velocity_right_pid,
+                      9999, 5000.0f);
 
     control_params_handler(&turn_angle_velocity_PID,
                            turn_angle_velocity_pid,
-                           10, 10, 10, 20, 10.0f);
+                           1, 1, 1, 9999, 10.0f);
 
     control_params_handler(&turn_err_PID,
                            turn_err_pid,
-                           10, 10, 10, 20, 10.0f);
+                           1, 1, 1, 9999, 5000.0f);
 }
 
 void control_init()
@@ -47,6 +65,11 @@ void control_init()
     turn_angle_velocity_PID = (pid_type_def){0};
     turn_err_PID = (pid_type_def){0};
     bottom_velocity_PID = (pid_type_def){0};
+
+    bottom_velocity_left_PID = (pid_type_def){0};
+    bottom_velocity_right_PID = (pid_type_def){0};
+
+    control_pid_params_init();
 }
 
 void main_control_pid(float z_velocity, float bottom_velocity_target, float bottom_velocity)
@@ -98,7 +121,7 @@ void main_control_pid_without_angle_vel()
 }
 
 // 开环速度控制
-void main_control_without_vel()
+void main_control_without_vel(float lvel, float rvel)
 {
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
     uint8 left = grey_tracking_get_status(GREY_LEFT);
@@ -106,6 +129,8 @@ void main_control_without_vel()
     uint8 right = grey_tracking_get_status(GREY_RIGHT);
     uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
 
+    // printf("%d, %d, %d, %d, %d\n",
+    //        left_side, left, mid, right, right_side);
     float turn_err_target = weight_list[0] * left_side +
                             weight_list[1] * left +
                             weight_list[2] * mid +
@@ -113,9 +138,10 @@ void main_control_without_vel()
                             weight_list[4] * right_side;
 
     float turn_diff = pid_turn_control_without_angle_vel(turn_err_target);
+    printf("%.2f\n", turn_diff);
 
-    motor_set_left_pwm(control_without_vel_base_pwm - turn_diff);  // set left pwm
-    motor_set_right_pwm(control_without_vel_base_pwm + turn_diff); // set right pwm
+    motor_set_left_pwm(lvel - turn_diff);  // set left pwm
+    motor_set_right_pwm(rvel + turn_diff); // set right pwm
 }
 
 // 正常循迹，开环转向
@@ -189,6 +215,52 @@ void main_control_encoder_only()
     }
 }
 
+void main_control_pid_vel_only()
+{
+    // float vel_left = encoder_absolute_encoder_get_offset(0);
+    // float vel_right = -encoder_absolute_encoder_get_offset(1);
+    static float last_left_vel = 0;
+    static float last_right_vel = 0;
+
+    encoder_data_t right_encoder_data = encoder_read(0);
+    encoder_data_t left_encoder_data = encoder_read(1);
+
+    float vel_left = left_encoder_data.velocity;
+    float vel_right = -right_encoder_data.velocity;
+
+    if (vel_left < 0)
+    {
+        vel_left = last_left_vel;
+    }
+    else
+    {
+        last_left_vel = vel_left;
+    }
+
+    if (vel_right < 0)
+    {
+        vel_right = last_right_vel;
+    }
+    else
+    {
+        last_right_vel = vel_right;
+    }
+
+    // absolute_encoder_get_location(0);
+    // absolute_encoder_get_location(1);
+
+    // float vel_left = absolute_encoder_get_offset(1);
+    // float vel_right = -absolute_encoder_get_offset(0);
+
+    float vel_left_out = pid_bottom_control_left(left_vel_target, vel_left);
+    float vel_right_out = pid_bottom_control_right(right_vel_target, vel_right);
+    // printf("%.2f\n", vel_right);
+    printf("%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n", vel_left_out, vel_right_out, vel_left, vel_right, left_vel_target, right_vel_target);
+
+    motor_set_left_pwm(vel_left_out);
+    motor_set_right_pwm(vel_right_out);
+}
+
 uint8 control_check_turn()
 {
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
@@ -197,16 +269,61 @@ uint8 control_check_turn()
     uint8 right = grey_tracking_get_status(GREY_RIGHT);
     uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
 
-    if ((left_side && left) || (right_side && right))
+    if (left_side || right_side)
     {
         return 1;
     }
     return 0;
 }
 
+uint8 control_check_line()
+{
+    uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
+    uint8 left = grey_tracking_get_status(GREY_LEFT);
+    uint8 mid = grey_tracking_get_status(GREY_MID);
+    uint8 right = grey_tracking_get_status(GREY_RIGHT);
+    uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
+
+    if (left_side || left || mid || right || right_side)
+    {
+        return 1; // 有线
+    }
+    return 0; // 无线
+}
+
 void control_callback_func(uint32 event, void *ptr)
 {
     *((uint8 *)ptr) = 1;
 
-    main_control_pid_without_angle_vel(); // 执行开放式控制
+    static int turning = 0;
+    static int turn_cnt = 0;
+    static int start_delay_cnt = 0;
+
+    // 启动延时阶段
+    if (start_delay_cnt < control_start_delay_time)
+    {
+        main_control_without_vel(control_start_left_vel_base_pwm, control_start_right_vel_base_pwm);
+        start_delay_cnt++;
+        return;
+    }
+
+    if (!turning && control_check_turn())
+    {
+        turning = 1;
+        turn_cnt = 0;
+    }
+
+    if (turning)
+    {
+        main_control_without_vel(1500, 1500); // 转弯控制
+        turn_cnt++;
+        if (turn_cnt >= control_without_vel_turn_delay)
+        {
+            turning = 0;
+        }
+    }
+    else
+    {
+        main_control_without_vel(control_without_left_vel_base_pwm, control_without_right_vel_base_pwm); // 正常循迹
+    }
 }

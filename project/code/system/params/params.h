@@ -14,6 +14,9 @@ extern uint8 turn_err_time;
 extern uint8 bottom_velocity_time;
 
 extern float bottom_velocity_pid[3];
+extern float bottom_velocity_left_pid[5];
+extern float bottom_velocity_right_pid[5];
+
 extern float turn_angle_velocity_pid[3];
 extern float turn_err_pid[3];
 
@@ -28,5 +31,15 @@ extern const float control_tracking_open_base_pwm; // 开环转弯基准PWM值
 extern const float control_tracking_open_turn_diff;
 extern const int control_tracking_open_turn_delay_times;
 
-extern const float control_without_vel_base_pwm;
+extern const float control_without_left_vel_base_pwm;
+extern const float control_without_right_vel_base_pwm;
+
+extern const float left_vel_target;
+extern const float right_vel_target;
+extern const int control_without_vel_turn_delay;
+
+extern const int control_start_delay_time;
+extern const int control_start_left_vel_base_pwm;
+extern const int control_start_right_vel_base_pwm;
+
 #endif

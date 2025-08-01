@@ -17,7 +17,7 @@ void encoder_absolute_encoder_callback_func(uint32 event, void *ptr)
         // 获取编码器当前大角度信息
         location_data[i] = absolute_encoder_get_location(i);
         // 通过两次角度对比得到当前的旋转速度
-        offset_data[i] = absolute_encoder_get_offset(i);
+        offset_data[i] = absolute_encoder_get_offset_fix(i);
     }
 }
 

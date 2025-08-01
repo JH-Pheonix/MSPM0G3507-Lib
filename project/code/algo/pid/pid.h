@@ -25,8 +25,11 @@ typedef struct
 {
     // PID 三参数
     float Kp;
+    float Kp2;
     float Ki;
     float Kd;
+
+    float confine;
 
     float max_out;  // 最大输出
     float max_iout; // 最大积分输出
@@ -47,7 +50,11 @@ void pid_init(pid_type_def *pid,
               const float PID[3],
               float max_out,
               float max_iout);
-
+void pid_init_double_k(pid_type_def *pid,
+                       const float PID[5],
+                       float max_out,
+                       float max_iout);
+float PID_calc_Position_double_k(pid_type_def *pid, float ref, float set);
 float PID_calc_Position(pid_type_def *pid, float ref, float set);
 
 float PID_calc_DELTA(pid_type_def *pid, float ref, float set);

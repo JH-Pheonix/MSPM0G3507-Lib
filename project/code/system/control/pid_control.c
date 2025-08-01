@@ -70,3 +70,37 @@ float pid_bottom_control(float bottom_velocity_target, float bottom_velocity)
     }
     return bottom_velocity_out;
 }
+
+float pid_bottom_control_left(float bottom_velocity_target, float bottom_vel)
+{
+    static uint8 bottom_velocity_cnt = 0;
+    float bottom_velocity_out = 0.0f;
+
+    if (bottom_velocity_cnt % bottom_velocity_time == 0)
+    {
+        bottom_velocity_out = PID_calc_Position_double_k(&bottom_velocity_left_PID, bottom_vel, bottom_velocity_target);
+        bottom_velocity_cnt = 0;
+    }
+    else
+    {
+        bottom_velocity_cnt++;
+    }
+    return bottom_velocity_out;
+}
+
+float pid_bottom_control_right(float bottom_velocity_target, float bottom_vel)
+{
+    static uint8 bottom_velocity_cnt = 0;
+    float bottom_velocity_out = 0.0f;
+
+    if (bottom_velocity_cnt % bottom_velocity_time == 0)
+    {
+        bottom_velocity_out = PID_calc_Position_double_k(&bottom_velocity_right_PID, bottom_vel, bottom_velocity_target);
+        bottom_velocity_cnt = 0;
+    }
+    else
+    {
+        bottom_velocity_cnt++;
+    }
+    return bottom_velocity_out;
+}

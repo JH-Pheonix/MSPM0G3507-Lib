@@ -148,47 +148,53 @@ void test_motor()
 {
 
     lcd_clear();
-    system_delay_ms(200);
+    // system_delay_ms(200);
 
     static uint16 cnt = 0;
     uint8 mode = 0;
     while (1)
     {
-        cnt++;
-        if (cnt >= 1000)
-        {
-            cnt = 0;
-            mode++;
-            if (mode > 3)
-                mode = 0;
-        }
+        // cnt++;
+        // if (cnt >= 1000)
+        // {
+        //     cnt = 0;
+        //     mode++;
+        //     if (mode > 3)
+        //         mode = 0;
+        // }
 
-        switch (mode)
-        {
-        case 0: // 左电机向前
-            motor_set_right_pwm(2000);
-            motor_set_left_pwm(0);
-            break;
-        case 1: // 左电机向后
-            motor_set_right_pwm(-2000);
-            motor_set_left_pwm(0);
-            break;
-        case 2: // 右电机向前
-            motor_set_left_pwm(2000);
-            motor_set_right_pwm(0);
-            break;
-        case 3: // 右电机向后
-            motor_set_left_pwm(-2000);
-            motor_set_right_pwm(0);
-            break;
-        }
-
+        // switch (mode)
+        // {
+        // case 0: // 左电机向前
+        //     motor_set_right_pwm(2000);
+        //     motor_set_left_pwm(0);
+        //     break;
+        // case 1: // 左电机向后
+        //     motor_set_right_pwm(-2000);
+        //     motor_set_left_pwm(0);
+        //     break;
+        // case 2: // 右电机向前
+        //     motor_set_left_pwm(2000);
+        //     motor_set_right_pwm(0);
+        //     break;
+        // case 3: // 右电机向后
+        //     motor_set_left_pwm(-2000);
+        //     motor_set_right_pwm(0);
+        //     break;
+        // }
+        // lcd_clear();
+        motor_set_right_pwm(1500);
+        motor_set_left_pwm(1500);
         encoder_data_t data1 = encoder_read(0);
         encoder_data_t data2 = encoder_read(1);
         printf("Encoder 1: Position: %.2f, Velocity: %.2f, Encoder 2: Position: %.2f, Velocity: %.2f\n",
                data1.position, data1.velocity, data2.position, data2.velocity);
+        // lcd_show_float(0, 0, data1.position, 3, 3);
+        // lcd_show_float(0, 1, -data1.velocity, 3, 3);
+        // lcd_show_float(0, 2, data2.position, 3, 3);
+        // lcd_show_float(0, 3, data2.velocity, 3, 3);
 
-        system_delay_ms(10);
+        system_delay_ms(50);
     }
 
     motor_set_left_pwm(0);

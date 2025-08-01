@@ -20,6 +20,28 @@ void pid_init(pid_type_def *pid,
         pid->Dout = pid->out = 0.0f;
 }
 
+void pid_init_double_k(pid_type_def *pid,
+                       const float PID[5],
+                       float max_out,
+                       float max_iout)
+{
+    if (pid == NULL || PID == NULL)
+    {
+        return;
+    }
+    pid->Kp = PID[0];
+    pid->Ki = PID[1];
+    pid->Kd = PID[2];
+    pid->Kp2 = PID[3];
+    pid->confine = PID[4];
+
+    pid->max_out = max_out;
+    pid->max_iout = max_iout;
+    pid->Dbuf[0] = pid->Dbuf[1] = pid->Dbuf[2] = 0.0f;
+    pid->error[0] = pid->error[1] = pid->error[2] = pid->Pout = pid->Iout =
+        pid->Dout = pid->out = 0.0f;
+}
+
 /**
  * @brief          pid calculate Position
  * @param[out]     pid: PID struct data point
@@ -46,6 +68,37 @@ float PID_calc_Position(pid_type_def *pid, float ref, float set)
     pid->fdb = ref;
     pid->error[0] = set - ref;
     pid->Pout = pid->Kp * pid->error[0];
+    pid->Iout += pid->Ki * pid->error[0];
+    pid->Dbuf[2] = pid->Dbuf[1];
+    pid->Dbuf[1] = pid->Dbuf[0];
+    pid->Dbuf[0] = (pid->error[0] - pid->error[1]);
+    pid->Dout = pid->Kd * pid->Dbuf[0];
+    pid->Iout = LIMIT(pid->Iout, -pid->max_iout, pid->max_iout);
+    pid->out = pid->Pout + pid->Iout + pid->Dout;
+    pid->out = LIMIT(pid->out, -pid->max_out, pid->max_out);
+    return pid->out;
+}
+
+float PID_calc_Position_double_k(pid_type_def *pid, float ref, float set)
+{
+    if (pid == NULL)
+    {
+        return 0.0f;
+    }
+    pid->error[2] = pid->error[1];
+    pid->error[1] = pid->error[0];
+    pid->set = set;
+    pid->fdb = ref;
+
+    // if (set - ref <= set)
+    pid->error[0] = set - ref;
+    // else
+    //     pid->error[0] = pid->error[1];
+    // printf("%.1f\n", pid->error[0]);
+
+    float total_Kp = pid->Kp + pid->Kp2 * (pid->error[0] - pid->confine);
+
+    pid->Pout = total_Kp * pid->error[0];
     pid->Iout += pid->Ki * pid->error[0];
     pid->Dbuf[2] = pid->Dbuf[1];
     pid->Dbuf[1] = pid->Dbuf[0];
