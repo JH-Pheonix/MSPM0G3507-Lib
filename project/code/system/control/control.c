@@ -74,6 +74,8 @@ void control_init()
 
 void main_control_pid(float z_velocity, float bottom_velocity_target, float bottom_velocity)
 {
+	
+	
     uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
     uint8 left = grey_tracking_get_status(GREY_LEFT);
     uint8 mid = grey_tracking_get_status(GREY_MID);

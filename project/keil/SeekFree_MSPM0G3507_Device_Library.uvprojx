@@ -1255,6 +1255,11 @@
               <FilePath>../code/device/motor/emm42.c</FilePath>
             </File>
             <File>
+              <FileName>motor_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/motor/motor_driver.c</FilePath>
+            </File>
+            <File>
               <FileName>zfmotor.c</FileName>
               <FileType>1</FileType>
               <FilePath>../code/device/motor/zfmotor.c</FilePath>
@@ -1263,6 +1268,11 @@
               <FileName>emm42.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/device/motor/emm42.h</FilePath>
+            </File>
+            <File>
+              <FileName>motor_driver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/motor/motor_driver.h</FilePath>
             </File>
             <File>
               <FileName>zfmotor.h</FileName>
