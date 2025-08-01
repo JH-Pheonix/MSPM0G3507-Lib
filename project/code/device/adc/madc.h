@@ -11,5 +11,6 @@ typedef enum
 
 void madc_init(madc_e channel);
 uint16_t madc_read(madc_e channel);
+uint8 madc_binary(madc_e channel, uint16 threshold);
 
 #endif

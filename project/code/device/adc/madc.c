@@ -26,3 +26,9 @@ uint16 madc_read(madc_e channel)
     }
     return 0;
 }
+
+uint8 madc_binary(madc_e channel, uint16 threshold)
+{
+    uint16 value = madc_read(channel);
+    return value > threshold ? 1 : 0;
+}
