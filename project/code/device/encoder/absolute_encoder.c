@@ -8,7 +8,7 @@ bool encoder_absolute_encoder_init(uint8 encoder_index)
     return absolute_encoder_init(encoder_index) == 0 ? true : false;
 }
 
-void encoder_absolute_encoder_pit_handler(uint32 event, void *ptr)
+void encoder_absolute_encoder_callback_func(uint32 event, void *ptr)
 {
     *((uint8 *)ptr) = 1;
 

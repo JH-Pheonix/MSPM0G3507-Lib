@@ -45,6 +45,7 @@ void key_clear_msg(void); // 新增清除按键消息函数
 KEY_e key_scan(void);     // 新增按键扫描函数
 
 void key_IRQHandler();
+void key_callback_func(uint32 event, void *ptr);
 
 extern KEY_MSG_t keymsg;
 

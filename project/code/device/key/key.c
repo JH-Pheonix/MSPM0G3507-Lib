@@ -176,3 +176,12 @@ void key_IRQHandler()
         keymsg.key = KEY_NONE;
     }
 }
+
+void key_callback_func(uint32 event, void *ptr)
+{
+    *((uint8 *)ptr) = 1;
+
+    key_IRQHandler();
+    while (key_get_msg(&keymsg))
+        ;
+}

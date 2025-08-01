@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "key.h"
 #include "lcd.h"
+#include "test.h"
 
 //======================================================================================================================
 typedef struct MENU_TABLE MENU_TABLE; // 菜单执行
@@ -26,11 +27,10 @@ MENU_TABLE Table_Null[] = {
 };
 //======================================================================================================================
 
-
 // 示例参数变量
-uint32 g_motor_speed = 100;        // 电机速度
-uint32 g_servo_angle = 90;         // 舵机角度
-int32 g_sensor_calibration = 0;    // 传感器校准值
+uint32 g_motor_speed = 100;     // 电机速度
+uint32 g_servo_angle = 90;      // 舵机角度
+int32 g_sensor_calibration = 0; // 传感器校准值
 
 uint32 *EEPROM_DATA_UINT[] = {
     &g_motor_speed,
@@ -42,9 +42,9 @@ int32 *EEPROM_DATA_INT[] = {
 };
 
 MENU_TABLE MainMenu_Table[] = {
-    {(uint8 *)"System Info", {.SubMenu = Table_Null}, Functions, {.ItemFunc = NULL}},
-    {(uint8 *)"Read EEPROM", {.SubMenu = Table_Null}, Functions, {.ItemFunc = Read_EEPROM}},
-    {(uint8 *)"Write EEPROM", {.SubMenu = Table_Null}, Functions, {.ItemFunc = Write_EEPROM}},
+    {(uint8 *)"Motor", {.UINT32 = &g_motor_speed}, Param_Uint, {.ItemFunc = test_motor}},    // 电机速度设置
+    {(uint8 *)"Key", {.UINT32 = &g_servo_angle}, Param_Uint, {.ItemFunc = test_key}},        // 舵机角度设置
+    {(uint8 *)"Grey", {.INT32 = &g_sensor_calibration}, Param_Int, {.ItemFunc = test_grey}}, // 传感器校准
 };
 
 /******************************************************************************
@@ -336,7 +336,7 @@ void adjustParam(Site_t site, MENU_TABLE *table)
         {
             lcd_show_string(site.x, site.y,
                             (const char *)(table->ItemHook.EnumName +
-                                     (*param.INT32) * (EnumNameLenth + 1)));
+                                           (*param.INT32) * (EnumNameLenth + 1)));
         }
     } while (key != KEY_B);
 }
@@ -390,7 +390,7 @@ void Menu_Display(MENU_TABLE *menuTable,
                 lcd_show_string(
                     site.x, site.y,
                     (const char *)(menuTable[pageNo + i].ItemHook.EnumName +
-                             num_t * (EnumNameLenth + 1)));
+                                   num_t * (EnumNameLenth + 1)));
             }
         }
     }
@@ -450,8 +450,8 @@ void Menu_Process(uint8 *menuName,
                     lcd_show_string(
                         site.x, site.y,
                         (const char *)(table[prmt->Index].ItemHook.EnumName +
-                                 (*(table[prmt->Index].MenuParams.INT32)) *
-                                     EnumNameLenth));
+                                       (*(table[prmt->Index].MenuParams.INT32)) *
+                                           EnumNameLenth));
                 // 在参数调节里看有无函数同时运行  可以同时执行
                 // 方便舵机调试，电机调试 这个在上面的调节参数函数里已经执行过
                 adjustParam(site, &table[prmt->Index]);
@@ -641,7 +641,7 @@ void System_Info(void)
     lcd_show_string(0, 3, "Flash: 512KB");
     lcd_show_string(0, 4, "RAM: 64KB");
     lcd_show_string(0, 5, "Press any key...");
-    
+
     // 等待按键返回
     KeySan();
 }
