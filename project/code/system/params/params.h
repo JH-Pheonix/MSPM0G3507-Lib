@@ -42,4 +42,10 @@ extern const int control_start_delay_time;
 extern const int control_start_left_vel_base_pwm;
 extern const int control_start_right_vel_base_pwm;
 
+extern bool RA_flag;
+extern bool RA_flag_R;
+extern bool RA_flag_L;
+extern uint16 RA_cnt;
+extern uint16 RA_cnt_n;
+
 #endif

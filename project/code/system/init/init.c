@@ -9,6 +9,7 @@
 #include "zfmotor.h"
 #include "test.h"
 #include "absolute_encoder.h"
+#include "motor_driver.h"
 
 volatile uint8_t control_pit_flag = 0;
 volatile uint8_t key_pit_flag = 0;
@@ -19,8 +20,9 @@ void system_init(void)
     lcd_init();
     // lcd_show_string(0, 0, "System...");
     motor_init();
-    absolute_encoder_init(0);
-    absolute_encoder_init(1);
+    // motor_driver_init();
+    // absolute_encoder_init(0);
+    // absolute_encoder_init(1);
     // // key_init_rewrite(KEY_NUM);
     grey_tracking_init(GREY_NUM);
 
@@ -31,9 +33,11 @@ void system_init(void)
     // // test_grey();
     // test_motor();
     control_init();
-    pit_ms_init(PIT_TIM_G6, 50, control_callback_func, (void *)&control_pit_flag);
-    // motor_set_right_pwm(1500);
-    // motor_set_left_pwm(1500);
+    pit_ms_init(PIT_TIM_G6, 10, control_callback_func, (void *)&control_pit_flag);
+    // motor_driver_set_right_pwm(100);
+    // motor_driver_set_left_pwm(1000);
+    // motor_set_left_pwm(1800);
+    // motor_set_right_pwm(2100);
 
     // imu_init(IMU_DEVICE_660RA);
     // key_init_rewrite(KEY_NUM);

@@ -11,7 +11,7 @@ void motor_driver_init(void)
     gpio_init(MOTOR_DRIVER_RIGHT_IN2, GPO, 0, GPO_PUSH_PULL);
 }
 
-void motor_driver_set_left_pwm(int16 pwm)
+void motor_driver_set_left_pwm(int32 pwm)
 {
     pwm = LIMIT(pwm, -MOTOR_DRIVER_MAX, MOTOR_DRIVER_MAX);
     if (pwm >= 0)
@@ -28,19 +28,19 @@ void motor_driver_set_left_pwm(int16 pwm)
     }
 }
 
-void motor_driver_set_right_pwm(int16 pwm)
+void motor_driver_set_right_pwm(int32 pwm)
 {
     pwm = LIMIT(pwm, -MOTOR_DRIVER_MAX, MOTOR_DRIVER_MAX);
     if (pwm >= 0)
     {
-        gpio_set_level(MOTOR_DRIVER_RIGHT_IN1, 0);
-        gpio_set_level(MOTOR_DRIVER_RIGHT_IN2, 1);
+        gpio_set_level(MOTOR_DRIVER_RIGHT_IN1, 1);
+        gpio_set_level(MOTOR_DRIVER_RIGHT_IN2, 0);
         pwm_set_duty(MOTOR_DRIVER_RIGHT_PWM, pwm);
     }
     else
     {
-        gpio_set_level(MOTOR_DRIVER_RIGHT_IN1, 1);
-        gpio_set_level(MOTOR_DRIVER_RIGHT_IN2, 0);
+        gpio_set_level(MOTOR_DRIVER_RIGHT_IN1, 0);
+        gpio_set_level(MOTOR_DRIVER_RIGHT_IN2, 1);
         pwm_set_duty(MOTOR_DRIVER_RIGHT_PWM, -pwm);
     }
 }
