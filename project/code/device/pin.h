@@ -52,6 +52,7 @@
 //                A    , C    , B    , D    , CENTER
 #define MKEY_NAME KEY_U, KEY_D, KEY_L, KEY_R, KEY_B
 #define MKEY_LIST A16, A30, A15, A31, A29
+#define SINGLE_KEY_PIN B6
 
 // grey tracking pin
 #define GREY_TRACKING_NAME GREY_LEFT_SIDE, GREY_LEFT, GREY_MID, GREY_RIGHT, GREY_RIGHT_SIDE

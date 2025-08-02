@@ -132,11 +132,16 @@ void main_control_without_vel(float lvel, float rvel)
 
     float turn_err_target = 0;
 
-    RA_flag_L = (left_side) ? 1 : RA_flag_L;
-    RA_flag_R = (right_side) ? 1 : RA_flag_R;
+    if (RA_out_cnt >= 200)
+    {
+        RA_flag_L = (left_side) ? 1 : RA_flag_L;
+        RA_flag_R = (right_side) ? 1 : RA_flag_R;
+    }
 
     if (!RA_flag_L && !RA_flag_R)
     {
+        RA_out_cnt++;
+
         if (left_side && !right_side)
         {
             turn_err_target = weight_list[0] * left_side +
@@ -160,6 +165,8 @@ void main_control_without_vel(float lvel, float rvel)
     }
     else
     {
+        RA_out_cnt = 0;
+
         turn_err_target = weight_list[0] * (int)RA_flag_L +
                           weight_list[4] * (int)RA_flag_R;
         RA_cnt++;
@@ -178,8 +185,7 @@ void main_control_without_vel(float lvel, float rvel)
     //                         weight_list[3] * right +
     //                         weight_list[4] * right_side;
 
-    float turn_diff = pid_turn_control_without_angle_vel(turn_err_target);
-    printf("%.2f\n", turn_diff);
+    float turn_diff = 0.9 * pid_turn_control_without_angle_vel(turn_err_target);
 
     motor_set_left_pwm(lvel - turn_diff);  // set left pwm
     motor_set_right_pwm(rvel + turn_diff); // set right pwm
@@ -310,7 +316,26 @@ uint8 control_check_turn()
     uint8 right = grey_tracking_get_status(GREY_RIGHT);
     uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
 
-    if (left_side || right_side)
+    if (left_side)
+    {
+        return 1;
+    }
+    else if (right_side)
+    {
+        return 2;
+    }
+    return 0;
+}
+
+uint8 control_check_mid()
+{
+    uint8 left_side = grey_tracking_get_status(GREY_LEFT_SIDE);
+    uint8 left = grey_tracking_get_status(GREY_LEFT);
+    uint8 mid = grey_tracking_get_status(GREY_MID);
+    uint8 right = grey_tracking_get_status(GREY_RIGHT);
+    uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
+
+    if (left || right || mid)
     {
         return 1;
     }
@@ -325,7 +350,7 @@ uint8 control_check_line()
     uint8 right = grey_tracking_get_status(GREY_RIGHT);
     uint8 right_side = grey_tracking_get_status(GREY_RIGHT_SIDE);
 
-    if (left_side || left || mid || right || right_side)
+    if (left_side && left && mid && right && right_side)
     {
         return 1; // 有线
     }
@@ -335,7 +360,7 @@ uint8 control_check_line()
 void control_callback_func(uint32 event, void *ptr)
 {
     *((uint8 *)ptr) = 1;
-
+    // printf("test\n");
     // static int turning = 0;
     // static int turn_cnt = 0;
     // static int start_delay_cnt = 0;
@@ -366,6 +391,47 @@ void control_callback_func(uint32 event, void *ptr)
     // else
     // {
 
+    // static bool flag = 0;
+    // static uint8 turn_dir = 0;
+    // if (flag == 1)
+    // {
+    //     if (control_check_mid())
+    //     {
+    //         flag = 0;
+    //     }
+    //     else
+    //     {
+    //         if (turn_dir == 1)
+    //         {
+    //             // 左转
+    //             float diff = pid_turn_control_without_angle_vel(weight_list[0]);
+    //             motor_set_left_pwm(diff);
+    //         }
+    //         else if (turn_dir == 2)
+    //         {
+    //             // 右转
+    //             float diff = pid_turn_control_without_angle_vel(weight_list[4]);
+    //             motor_set_right_pwm(diff);
+    //         }
+    //     }
+    // }
+
+    // turn_dir = control_check_turn();
+    // if (turn_dir)
+    // {
+    //     flag = 1;
+    //     return;
+    // }
+    // if (control_check_line())
+    // {
+    //     float diff = pid_turn_control_without_angle_vel(weight_list[1]);
+    //     motor_set_left_pwm(control_without_left_vel_base_pwm - diff);
+    //     motor_set_right_pwm(control_without_right_vel_base_pwm + diff);
+    //     return;
+    // }
     main_control_without_vel(control_without_left_vel_base_pwm, control_without_right_vel_base_pwm); // 正常循迹
+
+    // 无线状态，使用开环速度控制
+    // main_control_pid_without_angle_vel();
     // }
 }

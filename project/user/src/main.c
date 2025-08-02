@@ -33,6 +33,7 @@
 #include "init.h"
 #include "lcd.h"
 #include "test.h"
+#include "single_key.h"
 
 // 打开新的工程或者工程移动了位置务必执行以下操作
 // 第一步 关闭上面所有打开的文件
@@ -58,7 +59,9 @@ int main(void)
     while (true)
     {
         // 此处编写需要循环执行的代码
-
+        single_key_callback_func();
+        // printf("%d\n", single_key_get_cnt());
+        system_delay_ms(5);
         // 此处编写需要循环执行的代码
     }
 }

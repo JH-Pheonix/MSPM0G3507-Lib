@@ -47,5 +47,6 @@ extern bool RA_flag_R;
 extern bool RA_flag_L;
 extern uint16 RA_cnt;
 extern uint16 RA_cnt_n;
+extern uint16 RA_out_cnt;
 
 #endif

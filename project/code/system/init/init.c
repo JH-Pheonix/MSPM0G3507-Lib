@@ -10,10 +10,12 @@
 #include "test.h"
 #include "absolute_encoder.h"
 #include "motor_driver.h"
+#include "single_key.h"
 
 volatile uint8_t control_pit_flag = 0;
 volatile uint8_t key_pit_flag = 0;
 volatile uint8_t encoder_pit_flag = 0;
+volatile uint8_t single_key_pit_flag = 0;
 
 void system_init(void)
 {
@@ -27,17 +29,19 @@ void system_init(void)
     grey_tracking_init(GREY_NUM);
 
     // // pit_ms_init(PIT_TIM_G6, 5, key_callback_func, (void *)&key_pit_flag);
-    pit_ms_init(PIT_TIM_G12, 5, encoder_absolute_encoder_callback_func, (void *)&encoder_pit_flag);
+    // pit_ms_init(PIT_TIM_G12, 5, encoder_absolute_encoder_callback_func, (void *)&encoder_pit_flag);
 
+    single_key_init();
+    // pit_ms_init(PIT_TIM_G12, 20, single_key_callback_func, (void *)&single_key_pit_flag);
     // // MainMenu_Set();
-    // // test_grey();
+    // test_grey();
     // test_motor();
-    control_init();
-    pit_ms_init(PIT_TIM_G6, 10, control_callback_func, (void *)&control_pit_flag);
+    // control_init();
+    // pit_ms_init(PIT_TIM_G6, 10, control_callback_func, (void *)&control_pit_flag);
     // motor_driver_set_right_pwm(100);
     // motor_driver_set_left_pwm(1000);
-    // motor_set_left_pwm(1800);
-    // motor_set_right_pwm(2100);
+    motor_set_left_pwm(1800);
+    motor_set_right_pwm(2100);
 
     // imu_init(IMU_DEVICE_660RA);
     // key_init_rewrite(KEY_NUM);

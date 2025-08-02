@@ -1225,9 +1225,19 @@
               <FilePath>../code/device/key/key.c</FilePath>
             </File>
             <File>
+              <FileName>single_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../code/device/key/single_key.c</FilePath>
+            </File>
+            <File>
               <FileName>key.h</FileName>
               <FileType>5</FileType>
               <FilePath>../code/device/key/key.h</FilePath>
+            </File>
+            <File>
+              <FileName>single_key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>../code/device/key/single_key.h</FilePath>
             </File>
           </Files>
         </Group>
